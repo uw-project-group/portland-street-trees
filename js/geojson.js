@@ -3,7 +3,7 @@ function getMap(){
     var myMap;
 
     // default values
-    var myCenterCoords = [39.8097, -98.5556];
+    var myCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
     /*tile layers*/
@@ -25,20 +25,18 @@ function getMap(){
 
     getData(myMap);
 
-
     function getData(map) {
-        $.ajax('data/metroRegionsZHVI2017.geojson', {
+        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE 'ALAMEDA'", {
             dataType: 'json',
             success: function(response) {
-
+                console.log('we have data!', response);
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
-                });
 
+                });
                 var markers = L.markerClusterGroup();
                 markers.addLayer(geojsonLayer);
                 map.addLayer(markers);
-
             }
         });
     }
@@ -64,11 +62,11 @@ function getMap(){
         var clientWidth = document.documentElement.clientWidth;
 
         if (clientWidth < 500) {
-            return 3;
+            return 8;
         } else if (clientWidth < 1000) {
-            return 4;
+            return 10;
         } else  {
-            return 5;
+            return 12;
         }
     }
 
