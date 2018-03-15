@@ -16,7 +16,6 @@ function getMap(){
         '<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
 
-
     // create leaflet objects
     myMap = L.map('map', {layers: [cartoDB]}).setView(myCenterCoords, defaultZoom);
 
@@ -36,39 +35,29 @@ function getMap(){
                     pointToLayer: pointToLayer
                 });
 
-                map.addLayer(geojsonLayer);
+                var markers = L.markerClusterGroup();
+                markers.addLayer(geojsonLayer);
+                map.addLayer(markers);
 
             }
         });
     }
 
     function pointToLayer(feature, latlng) {
-        var attribute  = "2017-01";
-        var attributeValue = Number(feature.properties[attribute]);
+
         var geojsonMarkerOptions =  {
             radius: 5,
-            fillColor: "#8B008B",
+            fillColor: "#0e8b2e",
             color: "#000",
             weight: 1,
             opacity: 1,
             fillOpacity: 0.9
-        }
-
-        geojsonMarkerOptions.radius = calculateSymbolRadius(attributeValue);
+        };
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-
-        var cityDisplayName = "<p><strong>City:</strong> " + feature.properties.regionName + "</p>";
-        var attributeDisplayText = "<p><strong>Attribute:</strong> " + feature.properties[attribute] + "</p>";
-        var popupContent = cityDisplayName + attributeDisplayText;
+        var popupContent = "<p><strong>Properties: </strong> " + JSON.stringify(feature.properties) + "</p>";;
         layer.bindPopup(popupContent);
         return layer;
-    }
-
-    function calculateSymbolRadius(attrValue) {
-        var scaleFactor = .0006;
-        var area = attrValue * scaleFactor;
-        return Math.sqrt(area/Math.PI);;
     }
 
     function getZoomValue() {
