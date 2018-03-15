@@ -1,23 +1,28 @@
 function getMap(){
 
     var myMap;
-    var geojsonMarkerOptions;
-    
+
     // default values
-    var myCenterCoords = [39.8097, -98.5556];  
-    var defaultZoom = 4
-    
-    var tileLayerUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-	var tileLayerAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
+    var myCenterCoords = [39.8097, -98.5556];
+    var defaultZoom = getZoomValue();
+
+    /*tile layers*/
+    var cartoDB = L.tileLayer.provider('CartoDB.Positron');
+    var openStreetMap = L.tileLayer.provider('OpenStreetMap.BlackAndWhite');
+    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLite');
+    var baseMaps = {
+        '<span class="tileLayer__text">CartoDB Positron</span>': cartoDB,
+        '<span class="tileLayer__text">Open Street Map</span>': openStreetMap,
+        '<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
+    };
+
 
     // create leaflet objects
-    myMap = L.map('map-id').setView(myCenterCoords, defaultZoom);
-        
-	L.tileLayer(tileLayerUrl, {
-		attribution: tileLayerAttrib,
-		maxZoom: 18,
+    myMap = L.map('map', {layers: [cartoDB]}).setView(myCenterCoords, defaultZoom);
 
-	}).addTo(myMap);
+    L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
+    L.control.layers(baseMaps).addTo(myMap);
+    myMap.zoomControl.setPosition('bottomright');
 
     getData(myMap);
 
@@ -26,15 +31,15 @@ function getMap(){
         $.ajax('data/metroRegionsZHVI2017.geojson', {
             dataType: 'json',
             success: function(response) {
-                
+
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
                 });
 
                 map.addLayer(geojsonLayer);
-    
+
             }
-        });  
+        });
     }
 
     function pointToLayer(feature, latlng) {
@@ -44,10 +49,10 @@ function getMap(){
             radius: 5,
             fillColor: "#8B008B",
             color: "#000",
-            weight: 1, 
-            opacity: 1, 
+            weight: 1,
+            opacity: 1,
             fillOpacity: 0.9
-        }     
+        }
 
         geojsonMarkerOptions.radius = calculateSymbolRadius(attributeValue);
 
@@ -62,9 +67,20 @@ function getMap(){
 
     function calculateSymbolRadius(attrValue) {
         var scaleFactor = .0006;
-        var area = attrValue * scaleFactor; 
-        var radius = Math.sqrt(area/Math.PI);
-        return radius;
+        var area = attrValue * scaleFactor;
+        return Math.sqrt(area/Math.PI);;
+    }
+
+    function getZoomValue() {
+        var clientWidth = document.documentElement.clientWidth;
+
+        if (clientWidth < 500) {
+            return 3;
+        } else if (clientWidth < 1000) {
+            return 4;
+        } else  {
+            return 5;
+        }
     }
 
 }
