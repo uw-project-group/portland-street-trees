@@ -1,10 +1,16 @@
 function getMap(){
 
     var myMap;
+    var selectedMarkerClusterGroup;
+
+    // jquery variables
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
+
     // default values
     var myCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
+
+    var selectedNeighborhood = 'ALAMEDA';
 
     /*tile layers*/
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -23,21 +29,30 @@ function getMap(){
     L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
 
-    getData(myMap);
+    getData(myMap, selectedNeighborhood);
+
+    // retrieve list of distinct neighborhoods from database and set event listener on select box
     getNeighborhoodList();
 
-    function getData(map) {
-        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE 'ALAMEDA'", {
+    function getData(map, neighborhood) {
+        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'", {
             dataType: 'json',
             success: function(response) {
-                console.log('we have data!', response);
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
-
                 });
+
+                //if previous marker cluster group exists, remove it
+                if (selectedMarkerClusterGroup) {
+                    map.removeLayer(selectedMarkerClusterGroup);
+                }
+                // add new markers
                 var markers = L.markerClusterGroup();
+                selectedMarkerClusterGroup = markers;
                 markers.addLayer(geojsonLayer);
                 map.addLayer(markers);
+
+                // TODO(Tree): zoom to newly selected neighborhood
             }
         });
     }
@@ -50,11 +65,16 @@ function getMap(){
                     text : val.neighborho
                 }));
             });
+
+            // set event listener on neighborhood select box
+            $neighborhoodSelectBox.on('change', function() {
+                var selectedNeighborhood = this.value;
+                getData(myMap, selectedNeighborhood);
+            });
         });
     }
 
     function pointToLayer(feature, latlng) {
-
         var geojsonMarkerOptions =  {
             radius: 5,
             fillColor: "#0e8b2e",
@@ -81,7 +101,6 @@ function getMap(){
             return 12;
         }
     }
-
 }
 
 $(document).ready(getMap);
