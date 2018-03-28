@@ -1,7 +1,7 @@
 function getMap(){
 
     var myMap;
-
+    var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
     // default values
     var myCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
@@ -24,6 +24,7 @@ function getMap(){
     myMap.zoomControl.setPosition('bottomright');
 
     getData(myMap);
+    getNeighborhoodList();
 
     function getData(map) {
         $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE 'ALAMEDA'", {
@@ -41,6 +42,17 @@ function getMap(){
         });
     }
 
+    function getNeighborhoodList() {
+        $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
+            $.each(data.rows, function(key, val) {
+                $neighborhoodSelectBox.append($('<option/>', {
+                    value: val.neighborho,
+                    text : val.neighborho
+                }));
+            });
+        });
+    }
+
     function pointToLayer(feature, latlng) {
 
         var geojsonMarkerOptions =  {
@@ -53,7 +65,7 @@ function getMap(){
         };
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-        var popupContent = "<p><strong>Properties: </strong> " + JSON.stringify(feature.properties) + "</p>";;
+        var popupContent = "<p><strong>Properties: </strong> " + JSON.stringify(feature.properties) + "</p>";
         layer.bindPopup(popupContent);
         return layer;
     }
