@@ -7,7 +7,7 @@ function getMap(){
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
 
     // default values
-    var myCenterCoords = [45.5231, -122.6765];
+    var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
     var selectedNeighborhood = 'ALAMEDA';
@@ -23,7 +23,7 @@ function getMap(){
     };
 
     // create leaflet objects
-    myMap = L.map('map', {layers: [cartoDB]}).setView(myCenterCoords, defaultZoom);
+    myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
     L.control.layers(baseMaps).addTo(myMap);
@@ -74,6 +74,9 @@ function getMap(){
             // set event listener on neighborhood select box
             $neighborhoodSelectBox.on('change', function() {
                 var selectedNeighborhood = this.value;
+                if (myMap.getZoom() > 12) {
+                    myMap.setView(pdxCenterCoords, defaultZoom);
+                }
                 getData(myMap, selectedNeighborhood);
             });
         });
