@@ -10,7 +10,7 @@ function getMap(){
     var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
-    var selectedNeighborhood = 'ALAMEDA';
+    var selectedNeighborhood = '';
 
     /*tile layers*/
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -42,10 +42,7 @@ function getMap(){
                     pointToLayer: pointToLayer
                 });
 
-                //if previous marker cluster group exists, remove it
-                if (selectedMarkerClusterGroup) {
-                    map.removeLayer(selectedMarkerClusterGroup);
-                }
+
                 // add new markers
                 var markers = L.markerClusterGroup({
                     disableClusteringAtZoom: 18,
@@ -76,10 +73,12 @@ function getMap(){
 
             // set event listener on neighborhood select box
             $neighborhoodSelectBox.on('change', function() {
-                var selectedNeighborhood = this.value;
-                if (myMap.getZoom() > 12) {
-                    myMap.setView(pdxCenterCoords, defaultZoom);
+                selectedNeighborhood = this.value;
+                //if previous marker cluster group exists, remove it
+                if (selectedMarkerClusterGroup) {
+                    myMap.removeLayer(selectedMarkerClusterGroup);
                 }
+                myMap.setView(pdxCenterCoords, defaultZoom);
                 getData(myMap, selectedNeighborhood);
             });
         });
