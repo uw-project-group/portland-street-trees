@@ -47,7 +47,12 @@ function getMap(){
                     map.removeLayer(selectedMarkerClusterGroup);
                 }
                 // add new markers
-                var markers = L.markerClusterGroup();
+                var markers = L.markerClusterGroup({
+                    disableClusteringAtZoom: 18,
+                    showCoverageOnHover: true,
+                    zoomToBoundsOnClick: true,
+                    spiderfyOnMaxZoom: false
+                });
                 selectedMarkerClusterGroup = markers;
                 markers.addLayer(geojsonLayer);
                 map.addLayer(markers);
