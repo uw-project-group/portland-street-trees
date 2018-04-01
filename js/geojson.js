@@ -112,7 +112,6 @@ function getMap(){
     }
 
     function createPopupContent(props) {
-        console.log(props);
         var treeAddress = createString("Address: ", props.address);
         var treeCommonName = createString("Tree Common Name: ", props.common);
         var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
