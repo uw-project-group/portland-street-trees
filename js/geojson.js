@@ -51,13 +51,16 @@ function getMap(){
                     disableClusteringAtZoom: 18,
                     showCoverageOnHover: true,
                     zoomToBoundsOnClick: true,
-                    spiderfyOnMaxZoom: false
+                    spiderfyOnMaxZoom: false,
+                    polygonOptions: {
+                        color: 'yellowgreen',
+                        weight: 2,
+                        opacity: 0.9 
+                    }
                 });
                 selectedMarkerClusterGroup = markers;
                 markers.addLayer(geojsonLayer);
                 map.addLayer(markers);
-
-                // TODO(Tree): zoom to newly selected neighborhood
             }
         });
     }
@@ -85,7 +88,7 @@ function getMap(){
     function pointToLayer(feature, latlng) {
         var geojsonMarkerOptions =  {
             radius: 5,
-            fillColor: "#0e8b2e",
+            fillColor: "yellowgreen",
             color: "#000",
             weight: 1,
             opacity: 1,
