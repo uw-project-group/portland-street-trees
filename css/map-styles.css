@@ -1,3 +1,8 @@
 /*
 This stylesheet is for all styles specific to the map itself (popups, zoom controls, etc.).
 */
+
+.popupAttributes .labelName {
+    color: darkolivegreen;
+    font-weight: bold;
+}

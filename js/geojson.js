@@ -31,7 +31,7 @@ function getMap(){
 
     getData(myMap, selectedNeighborhood);
 
-    // retrieve list of distinct neighborhoods from database and set event listener on select box
+    // retrieve list of distinct neighborhoods from database and set event listeners on select box
     getNeighborhoodList();
 
     function getData(map, neighborhood) {
@@ -41,7 +41,6 @@ function getMap(){
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
                 });
-
 
                 // add new markers
                 var markers = L.markerClusterGroup({
@@ -95,7 +94,7 @@ function getMap(){
         };
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-        var popupContent = "<p><strong>Properties: </strong> " + JSON.stringify(feature.properties) + "</p>";
+        var popupContent = createPopupContent(feature.properties);
         layer.bindPopup(popupContent);
         return layer;
     }
@@ -110,6 +109,20 @@ function getMap(){
         } else  {
             return 12;
         }
+    }
+
+    function createPopupContent(props) {
+        console.log(props);
+        var treeAddress = createString("Address: ", props.address);
+        var treeCommonName = createString("Tree Common Name: ", props.common);
+        var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
+        var treeCondition = createString("Tree Condition: ", props.condition);
+        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition;
+        
+        function createString(labelName, propValue) {
+            return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
+        }
+        return popupContent;
     }
 }
 
