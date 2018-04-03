@@ -1,10 +1,16 @@
 function getMap(){
 
     var myMap;
+    var selectedMarkerClusterGroup;
+
+    // jquery variables
+    var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
 
     // default values
-    var myCenterCoords = [45.5231, -122.6765];
+    var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
+
+    var selectedNeighborhood = '';
 
     /*tile layers*/
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -17,35 +23,70 @@ function getMap(){
     };
 
     // create leaflet objects
-    myMap = L.map('map', {layers: [cartoDB]}).setView(myCenterCoords, defaultZoom);
+    myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
     L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
 
-    getData(myMap);
+    getData(myMap, selectedNeighborhood);
 
-    function getData(map) {
-        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE 'ALAMEDA'", {
+    // retrieve list of distinct neighborhoods from database and set event listeners on select box
+    getNeighborhoodList();
+
+    function getData(map, neighborhood) {
+        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'", {
             dataType: 'json',
             success: function(response) {
-                console.log('we have data!', response);
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
-
                 });
-                var markers = L.markerClusterGroup();
+
+                // add new markers
+                var markers = L.markerClusterGroup({
+                    disableClusteringAtZoom: 18,
+                    showCoverageOnHover: true,
+                    zoomToBoundsOnClick: true,
+                    spiderfyOnMaxZoom: false,
+                    polygonOptions: {
+                        color: 'yellowgreen',
+                        weight: 2,
+                        opacity: 0.9 
+                    }
+                });
+                selectedMarkerClusterGroup = markers;
                 markers.addLayer(geojsonLayer);
                 map.addLayer(markers);
             }
         });
     }
 
-    function pointToLayer(feature, latlng) {
+    function getNeighborhoodList() {
+        $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
+            $.each(data.rows, function(key, val) {
+                $neighborhoodSelectBox.append($('<option/>', {
+                    value: val.neighborho,
+                    text : val.neighborho
+                }));
+            });
 
+            // set event listener on neighborhood select box
+            $neighborhoodSelectBox.on('change', function() {
+                selectedNeighborhood = this.value;
+                //if previous marker cluster group exists, remove it
+                if (selectedMarkerClusterGroup) {
+                    myMap.removeLayer(selectedMarkerClusterGroup);
+                }
+                myMap.setView(pdxCenterCoords, defaultZoom);
+                getData(myMap, selectedNeighborhood);
+            });
+        });
+    }
+
+    function pointToLayer(feature, latlng) {
         var geojsonMarkerOptions =  {
             radius: 5,
-            fillColor: "#0e8b2e",
+            fillColor: "yellowgreen",
             color: "#000",
             weight: 1,
             opacity: 1,
@@ -53,7 +94,7 @@ function getMap(){
         };
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-        var popupContent = "<p><strong>Properties: </strong> " + JSON.stringify(feature.properties) + "</p>";;
+        var popupContent = createPopupContent(feature.properties);
         layer.bindPopup(popupContent);
         return layer;
     }
@@ -70,6 +111,18 @@ function getMap(){
         }
     }
 
+    function createPopupContent(props) {
+        var treeAddress = createString("Address: ", props.address);
+        var treeCommonName = createString("Tree Common Name: ", props.common);
+        var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
+        var treeCondition = createString("Tree Condition: ", props.condition);
+        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition;
+        
+        function createString(labelName, propValue) {
+            return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
+        }
+        return popupContent;
+    }
 }
 
 $(document).ready(getMap);

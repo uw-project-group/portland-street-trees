@@ -1,0 +1,83 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    color: darkolivegreen;
+    display: flex;
+    flex-flow: column wrap;
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#map {
+    flex: 1;
+}
+
+.mainHeader {
+    height: 60px;
+    overflow: hidden;
+    text-align: center;
+}
+
+.mainHeader h1 {
+    font-size: 24px;
+    opacity: .9;
+}
+
+.mainContainer {
+    display: flex;
+    flex: 1 1;
+    order: 2;
+}
+
+.infoPanel__container {
+    display: flex;
+    height: 100vh;
+    position: fixed;
+    top: 60px;
+    z-index: 1000;
+}
+
+.infoPanel {
+    background: white;
+    opacity: .9;
+    padding: 10px;
+    width: 300px;
+}
+
+.infoPanel__bar {
+    background: darkolivegreen;
+    box-shadow: 0 0 5px 0 #555;
+    color: white;
+    cursor: pointer;
+    opacity: .5;
+    padding-top: 10px;
+    text-align: center;
+    width: 15px;
+}
+
+.infoPanel__bar:hover {
+    opacity: .8;
+}
+
+.infoPanel h2 {
+    font-size: 22px;
+}
+
+.infoPanel h3 {
+    font-size: 18px;
+}
+
+.infoPanel select {
+    width: 100%;
+    border: 1px solid darkolivegreen;
+}
+
+.infoPanel select:hover,
+.infoPanel select:focus {
+    border: 1px solid yellowgreen;
+    opacity: .9;
+    outline: none;
+}
