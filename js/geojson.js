@@ -125,7 +125,7 @@ function getMap(){
         var geojsonMarkerOptions =  {
             radius: 6,
             fillColor: getFillColor(feature.properties.condition),
-            color: '#000',
+            color: '#696969',
             weight: 1,
             opacity: 1,
             fillOpacity: 0.9
