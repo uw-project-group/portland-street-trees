@@ -85,13 +85,28 @@ function getMap(){
 
     function pointToLayer(feature, latlng) {
         var geojsonMarkerOptions =  {
-            radius: 5,
-            fillColor: "yellowgreen",
-            color: "#000",
+            radius: 6,
+            fillColor: getFillColor(feature.properties.condition),
+            color: '#000',
             weight: 1,
             opacity: 1,
             fillOpacity: 0.9
         };
+
+        function getFillColor(conditionProperty) {
+            switch (conditionProperty.toLowerCase()) {
+                case 'good':
+                    return '#ADFF2F';
+                case 'fair':
+                    return '#93D843';
+                case 'poor':
+                    return 'darkolivegreen';
+                case 'dead':
+                    return 'black';
+                default:
+                    return 'white';                
+            }
+        }
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
         var popupContent = createPopupContent(feature.properties);
