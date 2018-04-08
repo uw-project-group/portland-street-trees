@@ -35,7 +35,8 @@ function getMap(){
     getNeighborhoodList();
 
     function getData(map, neighborhood) {
-        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'", {
+        var ajaxCall = createAjaxCall(neighborhood);
+        $.ajax(ajaxCall, {
             dataType: 'json',
             success: function(response) {
                 var geojsonLayer = L.geoJson(response, {
@@ -137,6 +138,13 @@ function getMap(){
             return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
         }
         return popupContent;
+    }
+
+    function createAjaxCall(neighborhood) {
+        var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
+        var query = "SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'";
+        var ajaxString = url + query;
+        return ajaxString;
     }
 }
 
