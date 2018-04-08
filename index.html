@@ -45,12 +45,12 @@
             <option value="ALL">ALL</option>
         </select>
         <h3>Filter Trees by Condition</h3>
-        <form>
-            <input type="radio" name="treeCondition" value="" title="" checked> All<br>
-            <input type="radio" name="treeCondition" value="good" title="" > Good<br>
-            <input type="radio" name="treeCondition" value="fair" title="" > Fair<br>
-            <input type="radio" name="treeCondition" value="poor" title="" > Poor<br>
-            <input type="radio" name="treeCondition" value="dead" title="" > Dead<br>
+        <form name="treeConditionFilter">
+            <input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br>
+            <input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br>
+            <input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br>
+            <input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br>
+            <input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br>
         </form>
         <!-- <h3>Filter Trees by Presence of Wires</h3>
         <form>

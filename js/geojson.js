@@ -90,6 +90,19 @@ function getMap(){
             // set event listener on neighborhood select box
             $neighborhoodSelectBox.on('change', function() {
                 selectedNeighborhood = this.value;
+                if (selectedNeighborhood === 'ALL' || selectedNeighborhood === false) {
+                    // reset and disable filters
+                    treeConditionRadioButtons[0].checked=true;
+                    for (var i = 0; i< treeConditionRadioButtons.length;  i++){
+                        treeConditionRadioButtons[i].disabled = true;
+                    }
+                } else {
+                    //enable radio buttons
+                    for (var j = 0; j< treeConditionRadioButtons.length;  j++){
+                        treeConditionRadioButtons[j].disabled = false;
+                    }
+                }
+
                 //if previous marker cluster group exists, remove it
                 if (selectedMarkerClusterGroup) {
                     myMap.removeLayer(selectedMarkerClusterGroup);
