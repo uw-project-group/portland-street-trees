@@ -3,16 +3,20 @@ function getMap(){
     var myMap;
     var selectedMarkerClusterGroup;
 
-    // jquery variables
+    /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
 
-    // default values
+    /* default map values */
     var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
+     /* pseudo-globals for map filters */
     var selectedNeighborhood = '';
+    var selectedTreeCondition = '';
 
-    /*tile layers*/
+    var treeConditionRadioButtons = document.getElementsByName("treeCondition");
+
+    /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
     var openStreetMap = L.tileLayer.provider('OpenStreetMap.BlackAndWhite');
     var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLite');
@@ -22,20 +26,33 @@ function getMap(){
         '<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
 
-    // create leaflet objects
+    /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
     L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
 
-    getData(myMap, selectedNeighborhood);
+    getData(myMap, selectedNeighborhood, selectedTreeCondition);
 
-    // retrieve list of distinct neighborhoods from database and set event listeners on select box
+    /* retrieve list of distinct neighborhoods from database and set event listeners on select box */
     getNeighborhoodList();
 
+    /* event listeners for filters */
+    for (var i = 0; i  < treeConditionRadioButtons.length; i++) {
+        treeConditionRadioButtons[i].addEventListener('click', function() {
+            selectedTreeCondition = this.value;
+            // only make call if there is a value for the selected neigbhorhood
+            // TODO(): disable filters if no neighborhood is selected
+            if (selectedNeighborhood.length) {
+                filterTrees();
+            }
+        });
+    }
+
     function getData(map, neighborhood) {
-        $.ajax("https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'", {
+        var ajaxCall = createAjaxCall(neighborhood);
+        $.ajax(ajaxCall, {
             dataType: 'json',
             success: function(response) {
                 var geojsonLayer = L.geoJson(response, {
@@ -73,6 +90,19 @@ function getMap(){
             // set event listener on neighborhood select box
             $neighborhoodSelectBox.on('change', function() {
                 selectedNeighborhood = this.value;
+                if (selectedNeighborhood === 'ALL' || selectedNeighborhood === false) {
+                    // reset and disable filters
+                    treeConditionRadioButtons[0].checked=true;
+                    for (var i = 0; i< treeConditionRadioButtons.length;  i++){
+                        treeConditionRadioButtons[i].disabled = true;
+                    }
+                } else {
+                    //enable radio buttons
+                    for (var j = 0; j< treeConditionRadioButtons.length;  j++){
+                        treeConditionRadioButtons[j].disabled = false;
+                    }
+                }
+
                 //if previous marker cluster group exists, remove it
                 if (selectedMarkerClusterGroup) {
                     myMap.removeLayer(selectedMarkerClusterGroup);
@@ -83,15 +113,38 @@ function getMap(){
         });
     }
 
+    function filterTrees() {
+        //if previous marker cluster group exists, remove it
+        if (selectedMarkerClusterGroup) {
+            myMap.removeLayer(selectedMarkerClusterGroup);
+        }
+        getData(myMap, selectedNeighborhood);
+    }
+
     function pointToLayer(feature, latlng) {
         var geojsonMarkerOptions =  {
-            radius: 5,
-            fillColor: "yellowgreen",
-            color: "#000",
+            radius: 6,
+            fillColor: getFillColor(feature.properties.condition),
+            color: '#696969',
             weight: 1,
             opacity: 1,
             fillOpacity: 0.9
         };
+
+        function getFillColor(conditionProperty) {
+            switch (conditionProperty.toLowerCase()) {
+                case 'good':
+                    return '#ADFF2F';
+                case 'fair':
+                    return '#93D843';
+                case 'poor':
+                    return 'brown';
+                case 'dead':
+                    return 'black';
+                default:
+                    return 'white';                
+            }
+        }
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
         var popupContent = createPopupContent(feature.properties);
@@ -122,6 +175,17 @@ function getMap(){
             return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
         }
         return popupContent;
+    }
+
+    function createAjaxCall(neighborhood) {
+        var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
+        var query = "SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'";
+        
+        if (selectedTreeCondition) {
+            query += "AND lower(condition) = '" + selectedTreeCondition + "'";
+        }
+        var ajaxString = url + query;
+        return ajaxString;
     }
 }
 
