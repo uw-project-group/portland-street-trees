@@ -111,11 +111,14 @@ function getMap(){
                     for (var i = 0; i< treeConditionRadioButtons.length;  i++){
                         treeConditionRadioButtons[i].disabled = true;
                     }
+                    presenceOfWiresCheckBox.disabled=true;
                 } else {
                     //enable radio buttons
                     for (var j = 0; j< treeConditionRadioButtons.length;  j++){
                         treeConditionRadioButtons[j].disabled = false;
                     }
+                    // enable checkbox
+                    presenceOfWiresCheckBox.disabled=false;
                 }
 
                 //if previous marker cluster group exists, remove it
