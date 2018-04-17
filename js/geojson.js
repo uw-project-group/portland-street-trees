@@ -47,7 +47,6 @@ function getMap(){
         treeConditionRadioButtons[i].addEventListener('click', function() {
             selectedTreeCondition = this.value;
             // only make call if there is a value for the selected neigbhorhood
-            // TODO(): disable filters if no neighborhood is selected
             if (selectedNeighborhood.length) {
                 filterAttributes();
             }
