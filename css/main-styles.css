@@ -5,7 +5,7 @@ body {
 }
 
 body {
-    color: darkslategray;
+    color: black;
     display: flex;
     flex-flow: column wrap;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -16,7 +16,7 @@ body {
 }
 
 .mainHeader {
-    background: darkslategray;
+    background: black;
     color: white;
     display: flex;
     flex-direction: row;
@@ -68,7 +68,7 @@ body {
 }
 
 .infoPanel__bar {
-    background: darkslategray;
+    background: black;
     box-shadow: 0 0 5px 0 #555;
     color: white;
     cursor: pointer;
@@ -91,16 +91,13 @@ body {
 }
 
 .infoPanel select {
-    border: 1px solid darkslategray;
-    color: darkslategray;
+    border: 1px solid black;
     width: 100%;
 }
 
 .infoPanel select:hover,
 .infoPanel select:focus {
-    background-color: yellowgreen;
-    color: white;
-    outline: none;
+    border: 1px solid yellowgreen;
 }
 
 .infoPanel label:hover {
@@ -112,109 +109,3 @@ input[type=radio]:hover,
 input[type=checkbox]:hover {
     cursor: pointer;
 }
-
-.infoPanel__bar:hover {
-    opacity: .8;
-}
-
-.infoPanel h2 {
-    font-size: 22px;
-}
-
-.infoPanel h3 {
-    font-size: 18px;
-}
-
-.infoPanel select {
-    border: 1px solid darkslategray;
-    color: darkslategray;
-    width: 100%;
-}
-
-.infoPanel select:hover,
-.infoPanel select:focus {
-    background-color: yellowgreen;
-    color: white;
-    outline: none;
-}
-
-.infoPanel label:hover {
-    color: yellowgreen;
-    cursor: pointer;
-}
-
-input[type=radio]:hover,
-input[type=checkbox]:hover {
-    cursor: pointer;
-}
-
-.infoPanel__bar:hover {
-    opacity: .8;
-}
-
-.infoPanel h2 {
-    font-size: 22px;
-}
-
-.infoPanel h3 {
-    font-size: 18px;
-}
-
-.infoPanel select {
-    border: 1px solid darkslategray;
-    color: darkslategray;
-    width: 100%;
-}
-
-.infoPanel select:hover,
-.infoPanel select:focus {
-    background-color: yellowgreen;
-    color: white;
-    outline: none;
-}
-
-.infoPanel label:hover {
-    color: yellowgreen;
-    cursor: pointer;
-}
-
-input[type=radio]:hover,
-input[type=checkbox]:hover {
-    cursor: pointer;
-}
-
-.infoPanel__bar:hover {
-    opacity: .8;
-}
-
-.infoPanel h2 {
-    font-size: 22px;
-}
-
-.infoPanel h3 {
-    font-size: 18px;
-}
-
-.infoPanel select {
-    border: 1px solid darkslategray;
-    color: darkslategray;
-    width: 100%;
-}
-
-.infoPanel select:hover,
-.infoPanel select:focus {
-    background-color: yellowgreen;
-    color: white;
-    outline: none;
-}
-
-.infoPanel label:hover {
-    color: yellowgreen;
-    cursor: pointer;
-}
-
-input[type=radio]:hover,
-input[type=checkbox]:hover {
-    cursor: pointer;
-}
-
