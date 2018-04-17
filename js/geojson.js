@@ -187,7 +187,8 @@ function getMap(){
         var treeCommonName = createString("Tree Common Name: ", props.common);
         var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
         var treeCondition = createString("Tree Condition: ", props.condition);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition;
+        var wiresPresent = createString("Wires Present: ", props.wires);
+        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent;
         
         function createString(labelName, propValue) {
             return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
