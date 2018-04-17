@@ -5,7 +5,7 @@ body {
 }
 
 body {
-    color: darkolivegreen;
+    color: darkslategray;
     display: flex;
     flex-flow: column wrap;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -16,14 +16,34 @@ body {
 }
 
 .mainHeader {
+    background: darkslategray;
+    color: white;
+    display: flex;
+    flex-direction: row;
     height: 60px;
+    justify-content: space-between;
+    opacity: .8;
     overflow: hidden;
     text-align: center;
 }
 
 .mainHeader h1 {
     font-size: 24px;
-    opacity: .9;
+    padding: 0 15px;
+}
+
+.mainHeader button {
+    background: transparent;
+    border: 2px solid transparent;
+    color:  yellowgreen;
+    outline: none;
+}
+
+.mainHeader button:hover,
+.mainHeader button:focus {
+    color: yellowgreen;
+    cursor: pointer;
+    opacity: .8;
 }
 
 .mainContainer {
@@ -43,12 +63,12 @@ body {
 .infoPanel {
     background: white;
     opacity: .9;
-    padding: 10px;
+    padding: 15px;
     width: 300px;
 }
 
 .infoPanel__bar {
-    background: darkolivegreen;
+    background: darkslategray;
     box-shadow: 0 0 5px 0 #555;
     color: white;
     cursor: pointer;
@@ -71,13 +91,130 @@ body {
 }
 
 .infoPanel select {
+    border: 1px solid darkslategray;
+    color: darkslategray;
     width: 100%;
-    border: 1px solid darkolivegreen;
 }
 
 .infoPanel select:hover,
 .infoPanel select:focus {
-    border: 1px solid yellowgreen;
-    opacity: .9;
+    background-color: yellowgreen;
+    color: white;
     outline: none;
 }
+
+.infoPanel label:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+input[type=radio]:hover,
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+
+.infoPanel__bar:hover {
+    opacity: .8;
+}
+
+.infoPanel h2 {
+    font-size: 22px;
+}
+
+.infoPanel h3 {
+    font-size: 18px;
+}
+
+.infoPanel select {
+    border: 1px solid darkslategray;
+    color: darkslategray;
+    width: 100%;
+}
+
+.infoPanel select:hover,
+.infoPanel select:focus {
+    background-color: yellowgreen;
+    color: white;
+    outline: none;
+}
+
+.infoPanel label:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+input[type=radio]:hover,
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+
+.infoPanel__bar:hover {
+    opacity: .8;
+}
+
+.infoPanel h2 {
+    font-size: 22px;
+}
+
+.infoPanel h3 {
+    font-size: 18px;
+}
+
+.infoPanel select {
+    border: 1px solid darkslategray;
+    color: darkslategray;
+    width: 100%;
+}
+
+.infoPanel select:hover,
+.infoPanel select:focus {
+    background-color: yellowgreen;
+    color: white;
+    outline: none;
+}
+
+.infoPanel label:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+input[type=radio]:hover,
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+
+.infoPanel__bar:hover {
+    opacity: .8;
+}
+
+.infoPanel h2 {
+    font-size: 22px;
+}
+
+.infoPanel h3 {
+    font-size: 18px;
+}
+
+.infoPanel select {
+    border: 1px solid darkslategray;
+    color: darkslategray;
+    width: 100%;
+}
+
+.infoPanel select:hover,
+.infoPanel select:focus {
+    background-color: yellowgreen;
+    color: white;
+    outline: none;
+}
+
+.infoPanel label:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+input[type=radio]:hover,
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+
