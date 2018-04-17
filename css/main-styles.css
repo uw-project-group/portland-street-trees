@@ -109,3 +109,43 @@ input[type=radio]:hover,
 input[type=checkbox]:hover {
     cursor: pointer;
 }
+
+.mainHeader__dropdownMenu {
+    background: black;
+    color: yellowgreen;
+    display: none;
+    height: 100px;
+    opacity: .8;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 225px;
+    z-index: 10000;
+}
+
+.mainHeader__dropdownMenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.mainHeader__dropdownMenu li {
+    padding-left: 10px;
+}
+
+.mainHeader__dropdownMenu li:hover {
+    background: yellowgreen;
+}
+
+.mainHeader__dropdownMenu a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.mainHeader__dropdownMenu a:hover,
+.mainHeader__dropdownMenu a:focus {
+    color: black;
+}
+
+.mainHeader__dropdownMenu a:active {
+    color: white;
+}
