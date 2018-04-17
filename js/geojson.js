@@ -13,8 +13,12 @@ function getMap(){
      /* pseudo-globals for map filters */
     var selectedNeighborhood = '';
     var selectedTreeCondition = '';
+    var selectedPresenceOfWires = '';
+    var selectedFunctionalType = '';
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
+    var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
+    var functionalTypeRadioButtons = document.getElementsByName("functionalTypeFilter");
 
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -43,9 +47,28 @@ function getMap(){
         treeConditionRadioButtons[i].addEventListener('click', function() {
             selectedTreeCondition = this.value;
             // only make call if there is a value for the selected neigbhorhood
-            // TODO(): disable filters if no neighborhood is selected
             if (selectedNeighborhood.length) {
-                filterTrees();
+                filterAttributes();
+            }
+        });
+    }
+    
+    presenceOfWiresCheckBox.addEventListener('click', function() {
+        if (presenceOfWiresCheckBox.checked) {
+            selectedPresenceOfWires = this.value;
+        } else {
+            selectedPresenceOfWires = '';
+        }
+        if (selectedNeighborhood.length) {
+            filterAttributes();
+        }
+    });
+
+    for (var i = 0; i  < functionalTypeRadioButtons.length; i++) {
+        functionalTypeRadioButtons[i].addEventListener('click', function() {
+            selectedFunctionalType = this.value;
+            if (selectedNeighborhood.length) {
+                filterAttributes();
             }
         });
     }
@@ -91,16 +114,26 @@ function getMap(){
             $neighborhoodSelectBox.on('change', function() {
                 selectedNeighborhood = this.value;
                 if (selectedNeighborhood === 'ALL' || selectedNeighborhood === false) {
-                    // reset and disable filters
+                    // disable all filters when no neighhorhood is selected
                     treeConditionRadioButtons[0].checked=true;
-                    for (var i = 0; i< treeConditionRadioButtons.length;  i++){
+                    for (var i = 0; i < treeConditionRadioButtons.length;  i++){
                         treeConditionRadioButtons[i].disabled = true;
                     }
+                    functionalTypeRadioButtons[0].checked=true;
+                    for (var i = 0; i < functionalTypeRadioButtons.length;  i++){
+                        functionalTypeRadioButtons[i].disabled = true;
+                    }
+                    presenceOfWiresCheckBox.disabled=true;
                 } else {
                     //enable radio buttons
-                    for (var j = 0; j< treeConditionRadioButtons.length;  j++){
-                        treeConditionRadioButtons[j].disabled = false;
+                    for (var i = 0; i < treeConditionRadioButtons.length;  i++){
+                        treeConditionRadioButtons[i].disabled = false;
                     }
+                    for (var i = 0; i < functionalTypeRadioButtons.length;  i++){
+                        functionalTypeRadioButtons[i].disabled = false;
+                    }
+                    // enable checkbox
+                    presenceOfWiresCheckBox.disabled=false;
                 }
 
                 //if previous marker cluster group exists, remove it
@@ -113,7 +146,7 @@ function getMap(){
         });
     }
 
-    function filterTrees() {
+    function filterAttributes() {
         //if previous marker cluster group exists, remove it
         if (selectedMarkerClusterGroup) {
             myMap.removeLayer(selectedMarkerClusterGroup);
@@ -169,7 +202,9 @@ function getMap(){
         var treeCommonName = createString("Tree Common Name: ", props.common);
         var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
         var treeCondition = createString("Tree Condition: ", props.condition);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition;
+        var wiresPresent = createString("Wires Present: ", props.wires);
+        var functionalType = createString("Functional Type: ", props.functional);
+        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent + functionalType;
         
         function createString(labelName, propValue) {
             return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
@@ -183,6 +218,14 @@ function getMap(){
         
         if (selectedTreeCondition) {
             query += "AND lower(condition) = '" + selectedTreeCondition + "'";
+        }
+
+        if (selectedPresenceOfWires) {
+            query += "AND lower(wires) = '" + selectedPresenceOfWires + "'";
+        }
+
+        if (selectedFunctionalType) {
+            query += "AND lower(functional) = '" + selectedFunctionalType + "'";
         }
         var ajaxString = url + query;
         return ajaxString;
