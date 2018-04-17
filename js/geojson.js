@@ -13,8 +13,10 @@ function getMap(){
      /* pseudo-globals for map filters */
     var selectedNeighborhood = '';
     var selectedTreeCondition = '';
+    var selectedPresenceOfWires = '';
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
+    var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
 
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -45,10 +47,23 @@ function getMap(){
             // only make call if there is a value for the selected neigbhorhood
             // TODO(): disable filters if no neighborhood is selected
             if (selectedNeighborhood.length) {
-                filterTrees();
+                filterAttributes();
             }
         });
     }
+    
+    presenceOfWiresCheckBox.addEventListener('click', function() {
+        if (presenceOfWiresCheckBox.checked) {
+            selectedPresenceOfWires = this.value;
+        } else {
+            selectedPresenceOfWires = '';
+        }
+        // only make call if there is a value for the selected neigbhorhood
+        // TODO(): disable filters if no neighborhood is selected
+        if (selectedNeighborhood.length) {
+            filterAttributes();
+        }
+    });
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
@@ -113,7 +128,7 @@ function getMap(){
         });
     }
 
-    function filterTrees() {
+    function filterAttributes() {
         //if previous marker cluster group exists, remove it
         if (selectedMarkerClusterGroup) {
             myMap.removeLayer(selectedMarkerClusterGroup);
@@ -184,6 +199,11 @@ function getMap(){
         if (selectedTreeCondition) {
             query += "AND lower(condition) = '" + selectedTreeCondition + "'";
         }
+
+        if (selectedPresenceOfWires) {
+            query += "AND lower(wires) = '" + selectedPresenceOfWires + "'";
+        }
+
         var ajaxString = url + query;
         return ajaxString;
     }
