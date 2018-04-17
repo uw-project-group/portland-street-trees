@@ -14,9 +14,11 @@ function getMap(){
     var selectedNeighborhood = '';
     var selectedTreeCondition = '';
     var selectedPresenceOfWires = '';
+    var selectedFunctionalType = '';
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
     var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
+    var functionalTypeRadioButtons = document.getElementsByName("functionalTypeFilter");
 
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
@@ -58,12 +60,19 @@ function getMap(){
         } else {
             selectedPresenceOfWires = '';
         }
-        // only make call if there is a value for the selected neigbhorhood
-        // TODO(): disable filters if no neighborhood is selected
         if (selectedNeighborhood.length) {
             filterAttributes();
         }
     });
+
+    for (var i = 0; i  < functionalTypeRadioButtons.length; i++) {
+        functionalTypeRadioButtons[i].addEventListener('click', function() {
+            selectedFunctionalType = this.value;
+            if (selectedNeighborhood.length) {
+                filterAttributes();
+            }
+        });
+    }
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
@@ -106,16 +115,23 @@ function getMap(){
             $neighborhoodSelectBox.on('change', function() {
                 selectedNeighborhood = this.value;
                 if (selectedNeighborhood === 'ALL' || selectedNeighborhood === false) {
-                    // reset and disable filters
+                    // disable all filters when no neighhorhood is selected
                     treeConditionRadioButtons[0].checked=true;
-                    for (var i = 0; i< treeConditionRadioButtons.length;  i++){
+                    for (var i = 0; i < treeConditionRadioButtons.length;  i++){
                         treeConditionRadioButtons[i].disabled = true;
+                    }
+                    functionalTypeRadioButtons[0].checked=true;
+                    for (var i = 0; i < functionalTypeRadioButtons.length;  i++){
+                        functionalTypeRadioButtons[i].disabled = true;
                     }
                     presenceOfWiresCheckBox.disabled=true;
                 } else {
                     //enable radio buttons
-                    for (var j = 0; j< treeConditionRadioButtons.length;  j++){
-                        treeConditionRadioButtons[j].disabled = false;
+                    for (var i = 0; i < treeConditionRadioButtons.length;  i++){
+                        treeConditionRadioButtons[i].disabled = false;
+                    }
+                    for (var i = 0; i < functionalTypeRadioButtons.length;  i++){
+                        functionalTypeRadioButtons[i].disabled = false;
                     }
                     // enable checkbox
                     presenceOfWiresCheckBox.disabled=false;
@@ -188,7 +204,8 @@ function getMap(){
         var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
         var treeCondition = createString("Tree Condition: ", props.condition);
         var wiresPresent = createString("Wires Present: ", props.wires);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent;
+        var functionalType = createString("Functional Type: ", props.functional);
+        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent + functionalType;
         
         function createString(labelName, propValue) {
             return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
@@ -208,6 +225,9 @@ function getMap(){
             query += "AND lower(wires) = '" + selectedPresenceOfWires + "'";
         }
 
+        if (selectedFunctionalType) {
+            query += "AND lower(functional) = '" + selectedFunctionalType + "'";
+        }
         var ajaxString = url + query;
         return ajaxString;
     }

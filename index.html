@@ -56,12 +56,15 @@
         <form>
             <input id="presence-of-wires-checkbox" type="checkbox" name="wireFilter" value="high voltage" title="Filter trees by presence of high voltage wires." disabled> High Voltage Only<br>
         </form>
-        <!-- <h3>Filter Trees by Type</h3>
+        <h3>Filter Trees by Functional Type</h3>
         <form>
-            <input type="radio" name="typeFilter" value="" title="" checked> All<br>
-            <input type="radio" name="typeFilter" value="deciduous" title=""> Deciduous<br>
-            <input type="radio" name="typeFilter" value="evergreen" title=""> Evergreen<br>
-        </form> -->
+            <input type="radio" name="functionalTypeFilter" value="" title="No tree type filter." checked> All<br>
+            <input type="radio" name="functionalTypeFilter" value="bd" title="Filter broadleaf deciduous tree type." disabled> Broadleaf Deciduous (BD)<br>
+            <input type="radio" name="functionalTypeFilter" value="be" title="Filter broadleaf evergreen tree type." disabled> Broadleaf Evergreen (BE)<br>
+            <input type="radio" name="functionalTypeFilter" value="cd" title="Filter coniferous deciduous tree type." disabled> Coniferous Deciduous (CD)<br>
+            <input type="radio" name="functionalTypeFilter" value="ce" title="Filter coniferous evergreen tree type." disabled> Coniferous Evergreen (CE)<br>
+            <input type="radio" name="functionalTypeFilter" value="palm" title="Filter palm tree type." disabled> Palm<br>
+        </form>
     </div>
     <div class="infoPanel__bar"></div>
 </div>
