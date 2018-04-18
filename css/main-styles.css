@@ -5,7 +5,7 @@ body {
 }
 
 body {
-    color: black;
+    color: darkslategray;
     display: flex;
     flex-flow: column wrap;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -16,7 +16,7 @@ body {
 }
 
 .mainHeader {
-    background: black;
+    background: darkslategray;
     color: white;
     display: flex;
     flex-direction: row;
@@ -35,13 +35,13 @@ body {
 .mainHeader button {
     background: transparent;
     border: 2px solid transparent;
-    color:  yellowgreen;
+    color:  goldenrod;
     outline: none;
 }
 
 .mainHeader button:hover,
 .mainHeader button:focus {
-    color: yellowgreen;
+    color: gold;
     cursor: pointer;
     opacity: .8;
 }
@@ -50,6 +50,44 @@ body {
     display: flex;
     flex: 1 1;
     order: 2;
+}
+
+.mainHeader__dropdownMenu {
+    background: darkslategray;
+    display: none;
+    opacity: .8;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 225px;
+    z-index: 10000;
+}
+
+.mainHeader__dropdownMenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.mainHeader__dropdownMenu li {
+    padding: 10px;
+}
+
+.mainHeader__dropdownMenu li:hover {
+    background: goldenrod;
+}
+
+.mainHeader__dropdownMenu a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.mainHeader__dropdownMenu a:hover {
+    color: white;
+}
+
+.mainHeader__dropdownMenu a:focus {
+    color: goldenrod;
+    outline: none;
 }
 
 .infoPanel__container {
@@ -68,7 +106,7 @@ body {
 }
 
 .infoPanel__bar {
-    background: black;
+    background: darkslategray;
     box-shadow: 0 0 5px 0 #555;
     color: white;
     cursor: pointer;
@@ -91,17 +129,17 @@ body {
 }
 
 .infoPanel select {
-    border: 1px solid black;
+    border: 1px solid darkslategray;
     width: 100%;
 }
 
 .infoPanel select:hover,
 .infoPanel select:focus {
-    border: 1px solid yellowgreen;
+    border: 1px solid goldenrod;
 }
 
 .infoPanel label:hover {
-    color: yellowgreen;
+    color: goldenrod;
     cursor: pointer;
 }
 
@@ -110,42 +148,3 @@ input[type=checkbox]:hover {
     cursor: pointer;
 }
 
-.mainHeader__dropdownMenu {
-    background: black;
-    color: yellowgreen;
-    display: none;
-    height: 100px;
-    opacity: .8;
-    position: fixed;
-    top: 60px;
-    right: 0;
-    width: 225px;
-    z-index: 10000;
-}
-
-.mainHeader__dropdownMenu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-.mainHeader__dropdownMenu li {
-    padding-left: 10px;
-}
-
-.mainHeader__dropdownMenu li:hover {
-    background: yellowgreen;
-}
-
-.mainHeader__dropdownMenu a {
-    text-decoration: none;
-    color: whitesmoke;
-}
-
-.mainHeader__dropdownMenu a:hover,
-.mainHeader__dropdownMenu a:focus {
-    color: black;
-}
-
-.mainHeader__dropdownMenu a:active {
-    color: white;
-}
