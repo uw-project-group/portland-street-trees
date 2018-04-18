@@ -11,6 +11,10 @@ function initialize(){
     $infoButton.click(function () {
         $mainHeaderMenu.slideToggle();
     });
+
+    $infoButton.blur(function () {
+        $mainHeaderMenu.fadeOut();
+    });
 }
 
 $(document).ready(initialize);
