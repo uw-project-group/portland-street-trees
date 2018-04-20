@@ -34,33 +34,44 @@
 <![endif]-->
 <header class="mainHeader">
     <h1>PORTLAND STREET TREES</h1>
-    <button id="main-header-info-button"><i class="fas fa-info-circle fa-2x"></i>&nbsp;</button>
+    <button id="main-header-info-button"><i class="fas fa-bars fa-2x"></i></button>
 </header>
+
 <div id="main-header-menu" class="mainHeader__dropdownMenu">
     <ul>
+        <li id="about-menu-item">
+            <a href="#overlay">About This Map</a>
+        </li>
         <li>
             <a href="https://github.com/uw-project-group/portland-street-trees">Project Source Code</a>
         </li>
         <li>
-            <a href="https://www.portlandoregon.gov/parks/53181">Portland Tree Inventory Project and Data</a>
+            <a href="https://www.portlandoregon.gov/parks/53181">The Portland Tree Inventory Project and Data</a>
         </li>
     </ul>
+</div>
 
-</div>
-<div class="mainContainer">
-    <div id="map"></div>
-</div>
+<div id="overlay" class="overlay">
+    <button id="overlay-close-button" class="overlay__closeButton"><i class="fas fa-times"></i></button>
+    <div class="overlay__headingContainer ">
+        <h2>Portland Street Trees</h2>
+    </div>     
+    <p>This map allows you to explore the health of neighborhood tree populations in Portland, Oregon.</p>
+    <p>Select a neighorhood to view individual trees in that neigbhorhood as well as aggregate neighborhood statistics.</p>
+    <p>Filter trees by their health condition, by tree type, and by whether or not they are near high voltage wires.</p>
+    
+</div>    
 
 <div class="infoPanel__container">
     <div class="infoPanel">
-        <h2>Tree Population Health</h2>
+        <h2>Neighborhood Tree Health</h2>
         <label for="neigbhorbood-select-box">Neighborhood:</label>
         <select name="neighborhood-select-box" id="neigbhorbood-select-box">
             <option value="" disabled>Select a Neighborhood</option>
             <option value="ALL">ALL</option>
         </select>
         <h3>Filter Trees by Condition</h3>
-        <form name="treeConditionFilter">
+            <form class="filters" name="treeConditionFilter">
             <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
             <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
             <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
@@ -68,11 +79,11 @@
             <label><input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br></label>
         </form>
         <h3>Filter Trees by Presence of Wires</h3>
-        <form>
+            <form class=filters>
             <label><input id="presence-of-wires-checkbox" type="checkbox" name="wireFilter" value="high voltage" title="Filter trees by presence of high voltage wires." disabled> High Voltage Only<br></label>
         </form>
         <h3>Filter Trees by Functional Type</h3>
-        <form>
+            <form class="filters">
             <label><input type="radio" name="functionalTypeFilter" value="" title="No tree type filter." checked> All<br></label>
             <label><input type="radio" name="functionalTypeFilter" value="bd" title="Filter broadleaf deciduous tree type." disabled> Broadleaf Deciduous (BD)<br></label>
             <label><input type="radio" name="functionalTypeFilter" value="be" title="Filter broadleaf evergreen tree type." disabled> Broadleaf Evergreen (BE)<br></label>
@@ -82,6 +93,10 @@
         </form>
     </div>
     <div class="infoPanel__bar"></div>
+</div>
+
+<div class="mainContainer">
+    <div id="map"></div>
 </div>
 
 <script src="js/vendor/modernizr-3.5.0.min.js"></script>
