@@ -38,6 +38,8 @@ function getMap(){
     myMap.zoomControl.setPosition('bottomright');
 
     getData(myMap, selectedNeighborhood, selectedTreeCondition);
+    
+    getNeighborhoodPoly(myMap);
 
     /* retrieve list of distinct neighborhoods from database and set event listeners on select box */
     getNeighborhoodList();
@@ -100,6 +102,26 @@ function getMap(){
             }
         });
     }
+    
+    //load the neighborhoods geojson data
+    function getNeighborhoodPoly(map){
+        $.ajax("data/Neighborhood_Boundaries.geojson",{
+            dataType:"json",
+            success: function(response){
+                var neighborOptions = {
+                    fillColor:'#ffffff',
+                    fillOpacity: 0,
+                    color: 'green',
+                    opacity:0.4,
+                }
+                L.geoJson(response,{
+                    style: neighborOptions,
+                    //onEachFeature: onEachFeature
+                }).addTo(map)
+                   
+            }
+        });
+    };
 
     function getNeighborhoodList() {
         $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
