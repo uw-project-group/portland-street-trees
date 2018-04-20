@@ -10,11 +10,13 @@ function getMap(){
     var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
-     /* pseudo-globals for map filters */
+     /* pseudo-globals for map*/
     var selectedNeighborhood = '';
     var selectedTreeCondition = '';
     var selectedPresenceOfWires = '';
     var selectedFunctionalType = '';
+
+    var selectedNeighborhoodBounds = [];
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
     var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
@@ -121,13 +123,15 @@ function getMap(){
 
                 function onEachFeature(feature, layer) {
                     layer.on({
-                        click: function() {
+                        click: function(e) {
                             if (feature.properties.TreeTotal > 0) {
+                                selectedNeighborhoodBounds = e.target.getBounds();
                                 selectNeighborhood(feature.properties.NAME);
+                                //update pseudo-global 'selectedNeighborhoodBounds'
                             } else {
                                 // TODO(Tree): handle null values gracefully
+                                console.log('Neighborhood with 0 Street Trees: ', feature.properties.NAME);
                             }
-                            console.log(feature.properties);
                         }
                     });
                 }
@@ -136,6 +140,7 @@ function getMap(){
                     if (selectedMarkerClusterGroup) {
                         myMap.removeLayer(selectedMarkerClusterGroup);
                     }
+                    // update pseudo-global 'selectedNeighborhood'
                     selectedNeighborhood = neighborhoodName;
                     $neighborhoodSelectBox.val(neighborhoodName).change();
                 
@@ -177,20 +182,26 @@ function getMap(){
                         functionalTypeRadioButtons[i].disabled = false;
                     }
                     // enable checkbox
-                    presenceOfWiresCheckBox.disabled=false;
+                    presenceOfWiresCheckBox.disabled = false;
                 }
 
                 //if previous marker cluster group exists, remove it
                 if (selectedMarkerClusterGroup) {
                     myMap.removeLayer(selectedMarkerClusterGroup);
                 }
-                myMap.setView(pdxCenterCoords, defaultZoom);
+                
+                if (selectedNeighborhood === 'ALL') {
+                    // zoom out to city 
+                    myMap.setView(pdxCenterCoords, defaultZoom);
+                } else {
+                    // zoom and pan to neighborhood bounds
+                    myMap.fitBounds(selectedNeighborhoodBounds);
+                }
+
                 getData(myMap, selectedNeighborhood);
             });
         });
     }
-
-
 
     function filterAttributes() {
         //if previous marker cluster group exists, remove it
