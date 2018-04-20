@@ -5,7 +5,7 @@ body {
 }
 
 body {
-    color: darkolivegreen;
+    color: #474849;
     display: flex;
     flex-flow: column wrap;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -15,21 +15,114 @@ body {
     flex: 1;
 }
 
+.mainContainer {
+    display: flex;
+    flex: 1 1;
+    order: 2;
+}
+
 .mainHeader {
+    background: #474849;
+    color: white;
+    display: flex;
+    flex-direction: row;
     height: 60px;
+    justify-content: space-between;
+    opacity: .8;
     overflow: hidden;
     text-align: center;
 }
 
 .mainHeader h1 {
     font-size: 24px;
-    opacity: .9;
+    padding: 0 15px;
 }
 
-.mainContainer {
-    display: flex;
-    flex: 1 1;
-    order: 2;
+.mainHeader button {
+    background: transparent;
+    border: 2px solid transparent;
+    color:  white;
+    outline: none;
+}
+
+.mainHeader button:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+.mainHeader button:focus {
+    color: greenyellow;
+}
+
+.mainHeader__dropdownMenu {
+    background: #474849;
+    display: none;
+    opacity: .8;
+    position: fixed;
+    top: 60px;
+    right: 0;
+    width: 225px;
+    z-index: 10000;
+}
+
+.mainHeader__dropdownMenu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mainHeader__dropdownMenu a {
+    display: inline-block;
+    color: whitesmoke;
+    text-decoration: none;
+    padding: 10px;
+    width: 100%;
+}
+
+.mainHeader__dropdownMenu a:hover,
+.mainHeader__dropdownMenu a:focus {
+    color: white;
+    background: yellowgreen;
+    outline: none;
+}
+
+.overlay {
+    background: white;
+    box-shadow: 0 0 10px 0 #474849;
+    color: #474849;
+    display: none;
+    opacity: .9;
+    padding: 10px;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    margin-top: -50px;
+    margin-left: -50px;
+    max-width: 500px;
+    z-index: 10000;
+}
+
+.overlay__headingContainer {
+    text-align: center;
+}
+
+.overlay__headingContainer h2 {
+    line-height: .25;
+}
+
+.overlay__closeButton {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #474849;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    outline: none;
+}
+
+.overlay__closeButton:hover {
+    color: yellowgreen;
 }
 
 .infoPanel__container {
@@ -43,12 +136,12 @@ body {
 .infoPanel {
     background: white;
     opacity: .9;
-    padding: 10px;
+    padding: 15px;
     width: 300px;
 }
 
 .infoPanel__bar {
-    background: darkolivegreen;
+    background: #474849;
     box-shadow: 0 0 5px 0 #555;
     color: white;
     cursor: pointer;
@@ -71,13 +164,31 @@ body {
 }
 
 .infoPanel select {
+    border: 1px solid #474849;
     width: 100%;
-    border: 1px solid darkolivegreen;
 }
 
-.infoPanel select:hover,
-.infoPanel select:focus {
+.infoPanel select:hover {
     border: 1px solid yellowgreen;
-    opacity: .9;
     outline: none;
 }
+
+.infoPanel select:focus {
+    border: 1px solid greenyellow;
+    outline: none;
+}
+
+.infoPanel select:hover {
+    cursor: pointer;
+}
+
+.filters label:hover {
+    color: yellowgreen;
+    cursor: pointer;
+}
+
+input[type=radio]:hover,
+input[type=checkbox]:hover {
+    cursor: pointer;
+}
+

@@ -3,7 +3,7 @@ This stylesheet is for all styles specific to the map itself (popups, zoom contr
 */
 
 .popupAttributes .labelName {
-    color: darkolivegreen;
+    color: black;
     font-weight: bold;
 }
 
