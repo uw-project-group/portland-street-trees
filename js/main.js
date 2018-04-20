@@ -1,8 +1,16 @@
 function initialize(){
+    var $aboutMenuItem = $('#about-menu-item');
     var $infoPanel = $('.infoPanel');
     var $infoPanelToggle = $('.infoPanel__bar');
     var $infoButton = $('#main-header-info-button');
     var $mainHeaderMenu = $('#main-header-menu');
+    var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
+    var $overlayCloseButton = $('#overlay-close-button');
+    var $overlay = $('#overlay');
+
+    $aboutMenuItem.click(function() {
+        $overlay.fadeIn('slow');
+    });
 
     $infoPanelToggle.click(function () {
         $infoPanel.toggle();
@@ -12,8 +20,14 @@ function initialize(){
         $mainHeaderMenu.slideToggle();
     });
 
-    $infoButton.blur(function () {
-        $mainHeaderMenu.fadeOut();
+    $neighborhoodSelectBox.click(function() {
+        $overlay.fadeOut('slow');
+        overlayIsHidden = true;
+    });
+
+    $overlayCloseButton.click(function () {
+        $overlay.fadeOut('slow');
+        overlayIsHidden = true; 
     });
 }
 
