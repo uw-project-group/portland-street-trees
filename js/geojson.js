@@ -37,7 +37,7 @@ function getMap(){
     L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
 
-    getData(myMap, selectedNeighborhood, selectedTreeCondition);
+    getData(myMap, selectedNeighborhood);
     
     getNeighborhoodPoly(myMap);
 
@@ -116,9 +116,31 @@ function getMap(){
                 }
                 L.geoJson(response,{
                     style: neighborOptions,
-                    //onEachFeature: onEachFeature
-                }).addTo(map)
-                   
+                    onEachFeature: onEachFeature
+                }).addTo(map);
+
+                function onEachFeature(feature, layer) {
+                    layer.on({
+                        click: function() {
+                            if (feature.properties.TreeTotal > 0) {
+                                selectNeighborhood(feature.properties.NAME);
+                            } else {
+                                // TODO(Tree): handle null values gracefully
+                            }
+                            console.log(feature.properties);
+                        }
+                    });
+                }
+
+                function selectNeighborhood(neighborhoodName) {
+                    if (selectedMarkerClusterGroup) {
+                        myMap.removeLayer(selectedMarkerClusterGroup);
+                    }
+                    selectedNeighborhood = neighborhoodName;
+                    $neighborhoodSelectBox.val(neighborhoodName).change();
+                
+                }
+            
             }
         });
     };
@@ -167,6 +189,8 @@ function getMap(){
             });
         });
     }
+
+
 
     function filterAttributes() {
         //if previous marker cluster group exists, remove it
