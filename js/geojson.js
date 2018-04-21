@@ -269,6 +269,27 @@ function getMap(){
         }
         return popupContent;
     }
+    
+    function setChart(){
+        var chartWidth = 300,
+            chartHeight = 460;
+    
+    
+        //create a second svg element to hold chart
+        var chart = d3.select(".infoPanel")
+            .append("svg")
+            .attr("width", chartWidth)
+            .attr("hight", chartHeight)
+            .attr("class", chart);
+    };
+    
+    setChart()
+    
+    //load the data
+    //d3.json()
+    
+    //create coordinated chart
+    //function setChart()
 
     function createAjaxCall(neighborhood) {
         var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
