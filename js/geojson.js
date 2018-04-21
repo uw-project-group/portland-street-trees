@@ -130,7 +130,7 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: 'green',
+                    color: 'yellowgreen',
                     opacity:0.4,
                 }
                 L.geoJson(response,{
@@ -294,13 +294,13 @@ function getMap(){
     function getFillColor(conditionProperty) {
         switch (conditionProperty.toLowerCase()) {
             case 'good':
-                return '#ADFF2F';
+                return 'greenyellow';
             case 'fair':
-                return '#93D843';
+                return 'yellowgreen';
             case 'poor':
-                return 'brown';
+                return '#82551B';
             case 'dead':
-                return 'black';
+                return '#34220B';
             default:
                 return 'white';                
         }
