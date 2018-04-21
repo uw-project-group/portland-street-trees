@@ -8,11 +8,20 @@ body {
     color: #474849;
     display: flex;
     flex-flow: column wrap;
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+select {
+    font: 20px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #map {
     flex: 1;
+}
+
+.chartLabelText {
+    fill: black;
+    font-size: 15px;
 }
 
 .mainContainer {
