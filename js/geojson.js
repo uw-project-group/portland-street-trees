@@ -16,7 +16,7 @@ function getMap(){
     var selectedPresenceOfWires = '';
     var selectedFunctionalType = '';
 
-    var selectedNeighborhoodBounds = [];
+    var allBounds = {};
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
     var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
@@ -122,13 +122,16 @@ function getMap(){
                 }).addTo(map);
 
                 function onEachFeature(feature, layer) {
+                    // add bounds for each neighorhood to the allBounds object
+                    // so that the dropdown can access these values as well
+                    allBounds[feature.properties.NAME] = layer.getBounds();
+                    
                     layer.on({
                         click: function(e) {
-                            if (feature.properties.TreeTotal > 0) {
-                                selectedNeighborhoodBounds = e.target.getBounds();
+                            // only select and pan/zoom if selecting a different neighborhood
+                            if ((feature.properties.TreeTotal > 0) && (selectedNeighborhood !== feature.properties.NAME)) {
                                 selectNeighborhood(feature.properties.NAME);
-                                //update pseudo-global 'selectedNeighborhoodBounds'
-                            } else {
+                            } else if (feature.properties.TreeTotal === 0) {
                                 // TODO(Tree): handle null values gracefully
                                 console.log('Neighborhood with 0 Street Trees: ', feature.properties.NAME);
                             }
@@ -143,12 +146,10 @@ function getMap(){
                     // update pseudo-global 'selectedNeighborhood'
                     selectedNeighborhood = neighborhoodName;
                     $neighborhoodSelectBox.val(neighborhoodName).change();
-                
-                }
-            
+                }            
             }
         });
-    };
+    }
 
     function getNeighborhoodList() {
         $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
@@ -188,13 +189,13 @@ function getMap(){
                 //if previous marker cluster group exists, remove it
                 if (selectedMarkerClusterGroup) {
                     myMap.removeLayer(selectedMarkerClusterGroup);
-                }
+                } 
                 
                 if (selectedNeighborhood === 'ALL') {
                     // zoom out to city 
                     myMap.setView(pdxCenterCoords, defaultZoom);
                 } else {
-                    // zoom and pan to neighborhood bounds
+                    var selectedNeighborhoodBounds = allBounds[selectedNeighborhood];
                     myMap.fitBounds(selectedNeighborhoodBounds);
                 }
 
