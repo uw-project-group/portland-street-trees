@@ -76,6 +76,60 @@ function getMap(){
             }
         });
     }
+    
+    function setChart(){
+        
+        //todo link to data
+        /*d3.json("data/Neighborhood_Boundaries.topojson", function(error,data){
+            data.forEach(function(d){
+                
+            });
+        }*/
+        var data = [40,10,45,5];
+        var chartWidth = 300,
+            chartHeight = 260,
+            radius = Math.min(chartWidth, chartHeight)/2;
+        
+        var color = d3.scaleOrdinal()
+            .range(['#ADFF2F','#93D843','darkgreen']);
+        
+        var arc = d3.arc()
+            .outerRadius(radius -10)
+            .innerRadius(radius -70);
+        
+        var labelArc = d3.arc()
+            .outerRadius(radius - 40)
+            .innerRadius(radius - 40);
+        
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d){return d});
+        
+        var chart = d3.select(".chart-container")
+            .append("svg")
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+            .attr("class", chart)
+        .append("g")
+            .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
+
+          var g = chart.selectAll(".arc")
+              .data(pie(data))
+            .enter().append("g")
+              .attr("class", "arc");
+
+          g.append("path")
+              .attr("d", arc)
+              .style("fill", function(d) { return color(d.data); });
+
+          g.append("text")
+              .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+              .attr("dy", ".35em")
+              .text(function(d) { return d.data; });
+        }
+    
+    //TODO a better way to call or put it a spot that will show the graph //after the nieghborhood has be selected. 
+    setChart();
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
@@ -269,6 +323,9 @@ function getMap(){
         }
         return popupContent;
     }
+    
+ 
+    
 
     function createAjaxCall(neighborhood) {
         var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
