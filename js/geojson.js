@@ -21,13 +21,13 @@ function getMap(){
         value: 50
     },{
         condition: 'Fair',
-        value: 10
+        value: 25
     },{
         condition: 'Poor',
-        value: 10
+        value: 12.5
     },{
         condition: 'Dead',
-        value: 5
+        value: 12.5
     }
 ]
 
@@ -308,8 +308,8 @@ function getMap(){
 
     function setChart(data) {
         
-        var chartWidth = 300,
-            chartHeight = 260,
+        var chartWidth = 280,
+            chartHeight = 240,
             radius = Math.min(chartWidth, chartHeight)/2;
     
         var arc = d3.arc()
@@ -350,8 +350,16 @@ function getMap(){
           g.append("text")
               .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
               .attr("dy", ".35em")
-              .text(function(d) { return d.data.condition; });
+              .attr("dx", "-20px")
+              .attr("class", "chartLabelText")
+              .text(function(d) { 
+                return createChartLabel(d.data.condition, d.data.value); 
+                });
         }
-}
+    }
+    
+    function createChartLabel(label, percentage) {
+        return label + ' ' + percentage + '%';
+    }
 
 $(document).ready(getMap);
