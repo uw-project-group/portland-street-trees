@@ -145,7 +145,8 @@ select {
 .infoPanel {
     background: white;
     opacity: .9;
-    padding: 15px;
+    overflow: auto;
+    padding: 15px 15px 100px 15px;
     width: 300px;
 }
 
