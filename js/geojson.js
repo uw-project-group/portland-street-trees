@@ -239,21 +239,6 @@ function getMap(){
             fillOpacity: 0.9
         };
 
-        function getFillColor(conditionProperty) {
-            switch (conditionProperty.toLowerCase()) {
-                case 'good':
-                    return '#ADFF2F';
-                case 'fair':
-                    return '#93D843';
-                case 'poor':
-                    return 'brown';
-                case 'dead':
-                    return 'black';
-                default:
-                    return 'white';                
-            }
-        }
-
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
         var popupContent = createPopupContent(feature.properties);
         layer.bindPopup(popupContent);
@@ -306,6 +291,21 @@ function getMap(){
         return ajaxString;
     }
 
+    function getFillColor(conditionProperty) {
+        switch (conditionProperty.toLowerCase()) {
+            case 'good':
+                return '#ADFF2F';
+            case 'fair':
+                return '#93D843';
+            case 'poor':
+                return 'brown';
+            case 'dead':
+                return 'black';
+            default:
+                return 'white';                
+        }
+    }
+
     function setChart(data) {
         
         var chartWidth = 300,
@@ -326,21 +326,6 @@ function getMap(){
                 console.log(d.value);
                 return d.value;
             });
-        
-            function getFillColor(conditionProperty) {
-                switch (conditionProperty.toLowerCase()) {
-                    case 'good':
-                        return '#ADFF2F';
-                    case 'fair':
-                        return '#93D843';
-                    case 'poor':
-                        return 'brown';
-                    case 'dead':
-                        return 'black';
-                    default:
-                        return 'white';                
-                }
-            }
 
         var chart = d3.select(".chart-container")
             .append("svg")
