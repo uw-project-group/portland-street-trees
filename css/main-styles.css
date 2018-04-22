@@ -166,11 +166,13 @@ select {
 }
 
 .infoPanel h2 {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .infoPanel h3 {
     font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 .infoPanel select {
