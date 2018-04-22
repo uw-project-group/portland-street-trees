@@ -184,10 +184,12 @@ function getMap(){
     function getNeighborhoodList() {
         $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
             $.each(data.rows, function(key, val) {
-                $neighborhoodSelectBox.append($('<option/>', {
-                    value: val.neighborho,
-                    text : val.neighborho
-                }));
+                if (val.neighborho !== 'PDX') {
+                    $neighborhoodSelectBox.append($('<option/>', {
+                        value: val.neighborho,
+                        text : val.neighborho
+                    }));
+                }
             });
 
             // set event listener on neighborhood select box
