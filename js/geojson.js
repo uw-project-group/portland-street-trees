@@ -10,13 +10,30 @@ function getMap(){
     var pdxCenterCoords = [45.5231, -122.6765];
     var defaultZoom = getZoomValue();
 
-     /* pseudo-globals for map*/
+     /* pseudo-globals for map */
     var selectedNeighborhood = '';
     var selectedTreeCondition = '';
     var selectedPresenceOfWires = '';
     var selectedFunctionalType = '';
 
+    var allNbhdData = [{
+        condition: 'Good',
+        value: 50
+    },{
+        condition: 'Fair',
+        value: 25
+    },{
+        condition: 'Poor',
+        value: 12.5
+    },{
+        condition: 'Dead',
+        value: 12.5
+    }];
+
+    /* variables to populate with values from the geojson so they can be easily consumed 
+    in other functions */
     var allBounds = {};
+    var allConditions = {};
 
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
     var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
@@ -45,6 +62,8 @@ function getMap(){
 
     /* retrieve list of distinct neighborhoods from database and set event listeners on select box */
     getNeighborhoodList();
+
+    setChart(allNbhdData);
 
     /* event listeners for filters */
     for (var i = 0; i  < treeConditionRadioButtons.length; i++) {
@@ -76,60 +95,6 @@ function getMap(){
             }
         });
     }
-    
-    function setChart(){
-        
-        //todo link to data
-        /*d3.json("data/Neighborhood_Boundaries.topojson", function(error,data){
-            data.forEach(function(d){
-                
-            });
-        }*/
-        var data = [40,10,45,5];
-        var chartWidth = 300,
-            chartHeight = 260,
-            radius = Math.min(chartWidth, chartHeight)/2;
-        
-        var color = d3.scaleOrdinal()
-            .range(['#ADFF2F','#93D843','darkgreen']);
-        
-        var arc = d3.arc()
-            .outerRadius(radius -10)
-            .innerRadius(radius -70);
-        
-        var labelArc = d3.arc()
-            .outerRadius(radius - 40)
-            .innerRadius(radius - 40);
-        
-        var pie = d3.pie()
-            .sort(null)
-            .value(function(d){return d});
-        
-        var chart = d3.select(".chart-container")
-            .append("svg")
-            .attr("width", chartWidth)
-            .attr("height", chartHeight)
-            .attr("class", chart)
-        .append("g")
-            .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
-
-          var g = chart.selectAll(".arc")
-              .data(pie(data))
-            .enter().append("g")
-              .attr("class", "arc");
-
-          g.append("path")
-              .attr("d", arc)
-              .style("fill", function(d) { return color(d.data); });
-
-          g.append("text")
-              .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-              .attr("dy", ".35em")
-              .text(function(d) { return d.data; });
-        }
-    
-    //TODO a better way to call or put it a spot that will show the graph //after the nieghborhood has be selected. 
-    setChart();
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
@@ -161,7 +126,7 @@ function getMap(){
     
     //load the neighborhoods geojson data
     function getNeighborhoodPoly(map){
-        $.ajax("data/Neighborhood_Boundaries.geojson",{
+        $.ajax("data/Neighborhood_Boundaries.geojson", {
             dataType:"json",
             success: function(response){
                 var neighborOptions = {
@@ -176,31 +141,41 @@ function getMap(){
                 }).addTo(map);
 
                 function onEachFeature(feature, layer) {
-                    // add bounds for each neighorhood to the allBounds object
-                    // so that the dropdown can access these values as well
-                    allBounds[feature.properties.NAME] = layer.getBounds();
+                    var neighborhoodName = feature.properties.NAME;
+
+                    // populate the pseudo-global objects declared at the top of this file
+                    // on order to hold values so that the dropdown can access them
+                    allBounds[neighborhoodName] = layer.getBounds();
+                    allConditions[neighborhoodName] = [{
+                        condition: 'Good',
+                        value: feature.properties.pct_Good
+                    },{
+                        condition: 'Fair',
+                        value: feature.properties.pct_Fair
+                    },{
+                        condition: 'Poor',
+                        value: feature.properties.pct_Poor
+                    },{
+                        condition: 'Dead',
+                        value: feature.properties.pct_Dead
+                    }];
                     
                     layer.on({
                         click: function(e) {
                             // only select and pan/zoom if selecting a different neighborhood
-                            if ((feature.properties.TreeTotal > 0) && (selectedNeighborhood !== feature.properties.NAME)) {
-                                selectNeighborhood(feature.properties.NAME);
+                            if ((feature.properties.TreeTotal > 0) && (selectedNeighborhood !== neighborhoodName)) {
+                                // update pseudo-global 'selectedNeighborhood'
+                                selectedNeighborhood = neighborhoodName;
+                                // trigger change event on the neighborhood dropdown
+                                // so that it always is in sync with the selected neighborhood
+                                $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
-                                // TODO(Tree): handle null values gracefully
-                                console.log('Neighborhood with 0 Street Trees: ', feature.properties.NAME);
+                                // TODO(Tree): handle null values gracefully and give feedback to user
+                                console.log('Neighborhood with 0 Street Trees: ', neighborhoodName);
                             }
                         }
                     });
-                }
-
-                function selectNeighborhood(neighborhoodName) {
-                    if (selectedMarkerClusterGroup) {
-                        myMap.removeLayer(selectedMarkerClusterGroup);
-                    }
-                    // update pseudo-global 'selectedNeighborhood'
-                    selectedNeighborhood = neighborhoodName;
-                    $neighborhoodSelectBox.val(neighborhoodName).change();
-                }            
+                } 
             }
         });
     }
@@ -208,10 +183,12 @@ function getMap(){
     function getNeighborhoodList() {
         $.getJSON('https://tcasiano.carto.com/api/v2/sql/?q=SELECT DISTINCT neighborho FROM pdx_street_trees ORDER BY neighborho ASC', function(data) {
             $.each(data.rows, function(key, val) {
-                $neighborhoodSelectBox.append($('<option/>', {
-                    value: val.neighborho,
-                    text : val.neighborho
-                }));
+                if (val.neighborho !== 'PDX') {
+                    $neighborhoodSelectBox.append($('<option/>', {
+                        value: val.neighborho,
+                        text : val.neighborho
+                    }));
+                }
             });
 
             // set event listener on neighborhood select box
@@ -248,12 +225,16 @@ function getMap(){
                 if (selectedNeighborhood === 'ALL') {
                     // zoom out to city 
                     myMap.setView(pdxCenterCoords, defaultZoom);
+                    updateChart(allNbhdData);
                 } else {
                     var selectedNeighborhoodBounds = allBounds[selectedNeighborhood];
+                    var selectedNeighborhoodTreeCondition = allConditions[selectedNeighborhood];
                     myMap.fitBounds(selectedNeighborhoodBounds);
+                    updateChart(selectedNeighborhoodTreeCondition);
                 }
 
                 getData(myMap, selectedNeighborhood);
+
             });
         });
     }
@@ -275,21 +256,6 @@ function getMap(){
             opacity: 1,
             fillOpacity: 0.9
         };
-
-        function getFillColor(conditionProperty) {
-            switch (conditionProperty.toLowerCase()) {
-                case 'good':
-                    return '#ADFF2F';
-                case 'fair':
-                    return '#93D843';
-                case 'poor':
-                    return 'brown';
-                case 'dead':
-                    return 'black';
-                default:
-                    return 'white';                
-            }
-        }
 
         var layer = L.circleMarker(latlng, geojsonMarkerOptions);
         var popupContent = createPopupContent(feature.properties);
@@ -323,9 +289,6 @@ function getMap(){
         }
         return popupContent;
     }
-    
- 
-    
 
     function createAjaxCall(neighborhood) {
         var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
@@ -344,6 +307,125 @@ function getMap(){
         }
         var ajaxString = url + query;
         return ajaxString;
+    }
+
+    function getFillColor(conditionProperty) {
+        switch (conditionProperty.toLowerCase()) {
+            case 'good':
+                return 'greenyellow';
+            case 'fair':
+                return 'yellowgreen';
+            case 'poor':
+                return '#82551B';
+            case 'dead':
+                return '#34220B';
+            default:
+                return 'white';                
+        }
+    }
+
+    function createChartLabel(label, percentage) {
+        return label + ' ' + percentage + '%';
+    }
+
+    function setChart(data) {
+        var chartWidth = 280,
+        chartHeight = 240,
+        radius = Math.min(chartWidth, chartHeight)/2;
+    
+        var arc = d3.arc()
+            .outerRadius(radius -10)
+            .innerRadius(radius -70);
+    
+        var labelArc = d3.arc()
+            .outerRadius(radius - 40)
+            .innerRadius(radius - 40);
+    
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d){
+                return d.value;
+            });
+        
+        var chart = d3.select(".chart-container")
+            .append("svg")
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+            .attr("class", "chart")
+            .append("g")
+            .attr("class", "chart-center")
+            .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
+    
+        var g = chart.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+    
+        g.append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { 
+            return getFillColor(d.data.condition); 
+        });
+    
+        g.append("text")
+            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .attr("dx", "-20px")
+            .attr("class", "chartLabelText")
+            .text(function(d) { 
+            return createChartLabel(d.data.condition, d.data.value); 
+        });   
+            
+    }
+
+    function updateChart(data) {
+        console.log("data for the new chart: ", data);
+       // TODO(): refactor this so there is less duplicative code between this function and the setChart function
+       // TODO(): format and position the labels properly
+        var chartWidth = 280,
+        chartHeight = 240,
+        radius = Math.min(chartWidth, chartHeight)/2;
+    
+        var arc = d3.arc()
+            .outerRadius(radius -10)
+            .innerRadius(radius -70);
+    
+        var labelArc = d3.arc()
+            .outerRadius(radius - 40)
+            .innerRadius(radius - 40);
+    
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d){
+                return d.value;
+            });
+
+        var arcs = d3.selectAll(".arc")
+            .remove()
+            .exit();
+
+        var chartCenter = d3.selectAll(".chart-center");    
+        
+        var g = chartCenter.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        g.append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { 
+            return getFillColor(d.data.condition); 
+        });
+    
+        g.append("text")
+            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .attr("dx", "-20px")
+            .attr("class", "chartLabelText")
+            .text(function(d) { 
+            return createChartLabel(d.data.condition, d.data.value); 
+        });   
+            
     }
 }
 

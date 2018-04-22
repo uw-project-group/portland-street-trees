@@ -64,8 +64,8 @@
 
 <div class="infoPanel__container">
     <div class="infoPanel">
-        <div class = "chart-container"></div>
         <h2>Neighborhood Tree Health</h2>
+        <div class = "chart-container"></div>
         <label for="neigbhorbood-select-box">Neighborhood:</label>
         <select name="neighborhood-select-box" id="neigbhorbood-select-box">
             <option value="" disabled>Select a Neighborhood</option>
@@ -74,9 +74,9 @@
         <h3>Filter Trees by Condition</h3>
             <form class="filters" name="treeConditionFilter">
             <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
-            <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
             <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
             <label><input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br></label>
+            <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
             <label><input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br></label>
         </form>
         <h3>Filter Trees by Presence of Wires</h3>
@@ -104,7 +104,7 @@
 <script src="js/vendor/jquery-3.2.1.min.js"></script>
 <script src="js/vendor/leaflet-providers.js"></script>
 <script src="js/vendor/leaflet.markercluster.js"></script>
-<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 <script src="js/geojson.js"></script>
