@@ -12,7 +12,6 @@ function getMap(){
 
      /* pseudo-globals for map */
     var selectedNeighborhood = '';
-    var selectedNbrhdTreeConditions = [];
     var selectedTreeCondition = '';
     var selectedPresenceOfWires = '';
     var selectedFunctionalType = '';
