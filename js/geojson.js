@@ -36,10 +36,6 @@ function getMap(){
     var allBounds = {};
     var allConditions = {};
 
-     /* pseudo-globals for map */
-    var chartWidth = 280,
-    chartHeight = 240;
-
     var treeConditionRadioButtons = document.getElementsByName("treeCondition");
     var presenceOfWiresCheckBox = document.getElementById("presence-of-wires-checkbox");
     var functionalTypeRadioButtons = document.getElementsByName("functionalTypeFilter");
@@ -137,7 +133,7 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: 'yellowgreen',
+                    color: 'green',
                     opacity:0.4,
                 }
                 L.geoJson(response,{
@@ -175,7 +171,7 @@ function getMap(){
                                 // so that it always is in sync with the selected neighborhood
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
-                                // TODO(Tree): handle null values gracefully
+                                // TODO(Tree): handle null values gracefully and give feedback to user
                                 console.log('Neighborhood with 0 Street Trees: ', neighborhoodName);
                             }
                         }
@@ -327,77 +323,89 @@ function getMap(){
         }
     }
 
+    function createChartLabel(label, percentage) {
+        return label + ' ' + percentage + '%';
+    }
+
     function setChart(data) {
-        
         var chartWidth = 280,
-            chartHeight = 240,
-            radius = Math.min(chartWidth, chartHeight)/2;
+        chartHeight = 240,
+        radius = Math.min(chartWidth, chartHeight)/2;
     
         var arc = d3.arc()
             .outerRadius(radius -10)
             .innerRadius(radius -70);
-        
+    
         var labelArc = d3.arc()
             .outerRadius(radius - 40)
             .innerRadius(radius - 40);
+    
+        var pie = d3.pie()
+            .sort(null)
+            .value(function(d){
+                return d.value;
+            });
         
+        var chart = d3.select(".chart-container")
+            .append("svg")
+            .attr("width", chartWidth)
+            .attr("height", chartHeight)
+            .attr("class", "chart")
+            .append("g")
+            .attr("class", "chart-center")
+            .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
+    
+        var g = chart.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+    
+        g.append("path")
+            .attr("d", arc)
+            .style("fill", function(d) { 
+            return getFillColor(d.data.condition); 
+        });
+    
+        g.append("text")
+            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .attr("dx", "-20px")
+            .attr("class", "chartLabelText")
+            .text(function(d) { 
+            return createChartLabel(d.data.condition, d.data.value); 
+        });   
+            
+    }
+
+    function updateChart(data) {
+        console.log("data for the new chart: ", data);
+       // TODO(): refactor this so there is less duplicative code between this function and the setChart function
+       // TODO(): format and position the labels properly
+        var chartWidth = 280,
+        chartHeight = 240,
+        radius = Math.min(chartWidth, chartHeight)/2;
+    
+        var arc = d3.arc()
+            .outerRadius(radius -10)
+            .innerRadius(radius -70);
+    
+        var labelArc = d3.arc()
+            .outerRadius(radius - 40)
+            .innerRadius(radius - 40);
+    
         var pie = d3.pie()
             .sort(null)
             .value(function(d){
                 return d.value;
             });
 
-        var chart = d3.select(".chart-container")
-            .append("svg")
-            .attr("width", chartWidth)
-            .attr("height", chartHeight)
-            .attr("class", chart)
-        .append("g")
-            .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
+        var arcs = d3.selectAll(".arc")
+            .remove()
+            .exit();
 
-          var g = chart.selectAll(".arc")
-              .data(pie(data))
-            .enter().append("g")
-              .attr("class", "arc");
-
-          g.append("path")
-              .attr("d", arc)
-              .style("fill", function(d) { 
-                return getFillColor(d.data.condition); 
-            });
-
-          g.append("text")
-              .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-              .attr("dy", ".35em")
-              .attr("dx", "-20px")
-              .attr("class", "chartLabelText")
-              .text(function(d) { 
-                return createChartLabel(d.data.condition, d.data.value); 
-                });
-        }
-    }
-
-    function updateChart(data) {
-        var chartWidth = 280,
-        chartHeight = 240,
-        radius = Math.min(chartWidth, chartHeight)/2;
+        var chartCenter = d3.selectAll(".chart-center");    
         
-        var arc = d3.arc()
-            .outerRadius(radius -10)
-            .innerRadius(radius -70);
-        
-        var labelArc = d3.arc()
-            .outerRadius(radius - 40)
-            .innerRadius(radius - 40);
-       
-        var pie = d3.pie()
-            .sort(null)
-            .value(function(d){
-                console.log(d.value);
-            return d.value;
-        });
-        var chart = d3.select('.chart-container');
-        var g = chart.selectAll(".arc")
+        var g = chartCenter.selectAll(".arc")
             .data(pie(data))
             .enter().append("g")
             .attr("class", "arc");
@@ -405,14 +413,19 @@ function getMap(){
         g.append("path")
             .attr("d", arc)
             .style("fill", function(d) { 
-                console.log("d.data", d.data);
             return getFillColor(d.data.condition); 
         });
-        
-      }
     
-    function createChartLabel(label, percentage) {
-        return label + ' ' + percentage + '%';
+        g.append("text")
+            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+            .attr("dy", ".35em")
+            .attr("dx", "-20px")
+            .attr("class", "chartLabelText")
+            .text(function(d) { 
+            return createChartLabel(d.data.condition, d.data.value); 
+        });   
+            
     }
+}
 
 $(document).ready(getMap);
