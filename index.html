@@ -65,7 +65,23 @@
 <div class="infoPanel__container">
     <div class="infoPanel">
         <h2>Neighborhood Tree Health</h2>
-        <label for="neigbhorbood-select-box">Neighborhood:</label>
+        <div class = "chart-container"></div>
+        <div class = "legend-container">
+            <div class = "legend-container__item">  
+                <div class="legend-circle goodColor"></div><span class="legend-text">Good</span>&nbsp;<span id="percent-good"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle fairColor"></div><span class="legend-text">Fair</span>&nbsp;<span id="percent-fair"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle poorColor"></div><span class="legend-text">Poor</span>&nbsp;<span id="percent-poor"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle deadColor"></div><span class="legend-text">Dead</span>&nbsp;<span id="percent-dead"></span>%
+            </div>
+            <br>
+        </div>
+        <label for="neigbhorbood-select-box">Select a Neighborhood:</label>
         <select name="neighborhood-select-box" id="neigbhorbood-select-box">
             <option value="" disabled>Select a Neighborhood</option>
             <option value="ALL">ALL</option>
@@ -73,9 +89,9 @@
         <h3>Filter Trees by Condition</h3>
             <form class="filters" name="treeConditionFilter">
             <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
-            <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
             <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
             <label><input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br></label>
+            <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
             <label><input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br></label>
         </form>
         <h3>Filter Trees by Presence of Wires</h3>
@@ -103,6 +119,7 @@
 <script src="js/vendor/jquery-3.2.1.min.js"></script>
 <script src="js/vendor/leaflet-providers.js"></script>
 <script src="js/vendor/leaflet.markercluster.js"></script>
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
 <script src="js/geojson.js"></script>

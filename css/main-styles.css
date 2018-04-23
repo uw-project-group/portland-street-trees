@@ -8,11 +8,20 @@ body {
     color: #474849;
     display: flex;
     flex-flow: column wrap;
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+select {
+    font: 20px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #map {
     flex: 1;
+}
+
+.chartLabelText {
+    fill: black;
+    font-size: 15px;
 }
 
 .mainContainer {
@@ -136,7 +145,8 @@ body {
 .infoPanel {
     background: white;
     opacity: .9;
-    padding: 15px;
+    overflow: auto;
+    padding: 15px 15px 100px 15px;
     width: 300px;
 }
 
@@ -156,11 +166,13 @@ body {
 }
 
 .infoPanel h2 {
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .infoPanel h3 {
     font-size: 18px;
+    margin-bottom: 5px;
+    margin-top: 10px;
 }
 
 .infoPanel select {
@@ -192,3 +204,36 @@ input[type=checkbox]:hover {
     cursor: pointer;
 }
 
+.legend-container {
+    margin: 10px;
+    width: 100%;
+}
+.legend-container__item {
+    display: inline-block;
+    width: 125px;
+}
+
+.legend-circle {
+    border: 1px solid #474849;
+    border-radius: 50%;
+    display: inline-block;
+    height: 15px;
+    margin: 2px 5px -3px 5px;
+    width: 15px;
+}
+
+.goodColor {
+    background: greenyellow;
+}
+
+.fairColor {
+    background: yellowgreen;
+}
+
+.poorColor {
+    background: #82551B;
+}
+
+.deadColor {
+    background: #34220B;
+}

@@ -7,6 +7,10 @@ This stylesheet is for all styles specific to the map itself (popups, zoom contr
     font-weight: bold;
 }
 
+.popupAttributes {
+    font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 /*
 Marker cluster plugin CSS overrides
 */
@@ -37,5 +41,9 @@ Marker cluster plugin CSS overrides
 	}
 
 .marker-cluster div {
-    font: 12px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.leaflet-control {
+    font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
