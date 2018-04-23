@@ -102,6 +102,18 @@ function getMap(){
         $.ajax(ajaxCall, {
             dataType: 'json',
             success: function(response) {
+                if (!response.features.length) {
+                    if (!neighborhood || neighborhood === 'ALL') {
+                        // we return early for this condition 
+                        // because we only want to trigger the display
+                        // of the feedback if a single neighborhood is selected
+                        console.log("No single neighborhood selected.");
+                        return;
+                    }
+                    console.log("There are no results in this query.");
+                    $('#filter-feedback').fadeIn('slow');
+                }
+
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
                 });
