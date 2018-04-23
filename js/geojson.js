@@ -64,6 +64,7 @@ function getMap(){
     getNeighborhoodList();
 
     setChart(allNbhdData);
+    updateLegend(allNbhdData);
 
     /* event listeners for filters */
     for (var i = 0; i  < treeConditionRadioButtons.length; i++) {
@@ -148,18 +149,18 @@ function getMap(){
                     allBounds[neighborhoodName] = layer.getBounds();
                     allConditions[neighborhoodName] = [{
                         condition: 'Good',
-                        value: feature.properties.pct_Good
+                        value: feature.properties.pct_Good.toFixed(2)
                     },{
                         condition: 'Fair',
-                        value: feature.properties.pct_Fair
+                        value: feature.properties.pct_Fair.toFixed(2)
                     },{
                         condition: 'Poor',
-                        value: feature.properties.pct_Poor
+                        value: feature.properties.pct_Poor.toFixed(2)
                     },{
                         condition: 'Dead',
-                        value: feature.properties.pct_Dead
+                        value: feature.properties.pct_Dead.toFixed(2)
                     }];
-                    
+
                     layer.on({
                         click: function(e) {
                             // only select and pan/zoom if selecting a different neighborhood
@@ -226,11 +227,13 @@ function getMap(){
                     // zoom out to city 
                     myMap.setView(pdxCenterCoords, defaultZoom);
                     updateChart(allNbhdData);
+                    updateLegend(allNbhdData);
                 } else {
                     var selectedNeighborhoodBounds = allBounds[selectedNeighborhood];
                     var selectedNeighborhoodTreeCondition = allConditions[selectedNeighborhood];
                     myMap.fitBounds(selectedNeighborhoodBounds);
                     updateChart(selectedNeighborhoodTreeCondition);
+                    updateLegend(selectedNeighborhoodTreeCondition);
                 }
 
                 getData(myMap, selectedNeighborhood);
@@ -324,8 +327,11 @@ function getMap(){
         }
     }
 
-    function createChartLabel(label, percentage) {
-        return label + ' ' + percentage + '%';
+    function updateLegend(neighborhoodValues) {
+        $('#percent-good').html(neighborhoodValues[0].value);
+        $('#percent-fair').html(neighborhoodValues[1].value);
+        $('#percent-poor').html(neighborhoodValues[2].value);
+        $('#percent-dead').html(neighborhoodValues[3].value);
     }
 
     function setChart(data) {
@@ -365,23 +371,11 @@ function getMap(){
             .attr("d", arc)
             .style("fill", function(d) { 
             return getFillColor(d.data.condition); 
-        });
-    
-        g.append("text")
-            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-            .attr("dy", ".35em")
-            .attr("dx", "-20px")
-            .attr("class", "chartLabelText")
-            .text(function(d) { 
-            return createChartLabel(d.data.condition, d.data.value); 
         });   
-            
     }
 
     function updateChart(data) {
-        console.log("data for the new chart: ", data);
        // TODO(): refactor this so there is less duplicative code between this function and the setChart function
-       // TODO(): format and position the labels properly
         var chartWidth = 280,
         chartHeight = 240,
         radius = Math.min(chartWidth, chartHeight)/2;
@@ -415,17 +409,7 @@ function getMap(){
             .attr("d", arc)
             .style("fill", function(d) { 
             return getFillColor(d.data.condition); 
-        });
-    
-        g.append("text")
-            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-            .attr("dy", ".35em")
-            .attr("dx", "-20px")
-            .attr("class", "chartLabelText")
-            .text(function(d) { 
-            return createChartLabel(d.data.condition, d.data.value); 
-        });   
-            
+        });        
     }
 }
 
