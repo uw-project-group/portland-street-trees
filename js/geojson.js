@@ -294,6 +294,11 @@ function getMap(){
     }
 
     function createAjaxCall(neighborhood) {
+        if (neighborhood === "SULLIVAN'S GULCH") {
+            // the correct way to escape a SQL apostrophe or single quote 
+            // is with two single quotes
+            neighborhood = "SULLIVAN''S GULCH";
+        }
         var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
         var query = "SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'";
         
