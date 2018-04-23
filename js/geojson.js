@@ -148,16 +148,16 @@ function getMap(){
                     allBounds[neighborhoodName] = layer.getBounds();
                     allConditions[neighborhoodName] = [{
                         condition: 'Good',
-                        value: feature.properties.pct_Good
+                        value: feature.properties.pct_Good.toFixed(2)
                     },{
                         condition: 'Fair',
-                        value: feature.properties.pct_Fair
+                        value: feature.properties.pct_Fair.toFixed(2)
                     },{
                         condition: 'Poor',
-                        value: feature.properties.pct_Poor
+                        value: feature.properties.pct_Poor.toFixed(2)
                     },{
                         condition: 'Dead',
-                        value: feature.properties.pct_Dead
+                        value: feature.properties.pct_Dead.toFixed(2)
                     }];
                     
                     layer.on({
