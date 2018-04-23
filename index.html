@@ -66,6 +66,21 @@
     <div class="infoPanel">
         <h2>Neighborhood Tree Health</h2>
         <div class = "chart-container"></div>
+        <div class = "legend-container">
+            <div class = "legend-container__item">  
+                <div class="legend-circle goodColor"></div><span class="legend-text">Good</span>&nbsp;<span id="percent-good"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle fairColor"></div><span class="legend-text">Fair</span>&nbsp;<span id="percent-fair"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle poorColor"></div><span class="legend-text">Poor</span>&nbsp;<span id="percent-poor"></span>%
+            </div>
+            <div class = "legend-container__item">  
+                <div class="legend-circle deadColor"></div><span class="legend-text">Dead</span>&nbsp;<span id="percent-dead"></span>%
+            </div>
+            <br>
+        </div>
         <label for="neigbhorbood-select-box">Neighborhood:</label>
         <select name="neighborhood-select-box" id="neigbhorbood-select-box">
             <option value="" disabled>Select a Neighborhood</option>
