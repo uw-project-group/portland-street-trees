@@ -7,8 +7,14 @@ function getMap(){
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
 
     /* default map values */
-    var pdxCenterCoords = [45.5231, -122.6765];
+    var pdxCenterCoords = [45.5410, -122.6769];
     var defaultZoom = getZoomValue();
+    var maxZoom = 13;
+    
+    /*limits to panning*/
+    var southWest = L.latLng(45.411, -122.922),
+    northEast = L.latLng(45.67, -122.452);
+    var bounds = L.latLngBounds(southWest, northEast);
 
      /* pseudo-globals for map */
     var selectedNeighborhood = '';
@@ -41,19 +47,31 @@ function getMap(){
 
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
-    var openStreetMap = L.tileLayer.provider('OpenStreetMap.BlackAndWhite');
-    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLite');
+    var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
+    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
     var baseMaps = {
         '<span class="tileLayer__text">CartoDB Positron</span>': cartoDB,
-        '<span class="tileLayer__text">Open Street Map</span>': openStreetMap,
-        '<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
+        '<span class="tileLayer__text">Imagery</span>': EsriImgagery,
+        //'<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
+    
+    var overylayMaps={
+        '<span class ="overLay__text">Labels</span>':stamenTonerLite
+    }
 
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
+    
+    
+    
+    //set bounds and animate the edge of panning area
+    myMap.setMaxBounds(bounds);
+    myMap.on('drag', function() {
+        myMap.panInsideBounds(bounds, { animate: true });
+    });
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
-    L.control.layers(baseMaps).addTo(myMap);
+    L.control.layers(baseMaps,overylayMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
 
     getData(myMap, selectedNeighborhood);
@@ -306,6 +324,11 @@ function getMap(){
     }
 
     function createAjaxCall(neighborhood) {
+        if (neighborhood === "SULLIVAN'S GULCH") {
+            // the correct way to escape a SQL apostrophe or single quote 
+            // is with two single quotes
+            neighborhood = "SULLIVAN''S GULCH";
+        }
         var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
         var query = "SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'";
         
