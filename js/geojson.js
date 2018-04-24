@@ -5,6 +5,7 @@ function getMap(){
 
     /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
+    var $filterFeedback = $('#filter-feedback');
 
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
@@ -122,14 +123,13 @@ function getMap(){
             success: function(response) {
                 if (!response.features.length) {
                     if (!neighborhood || neighborhood === 'ALL') {
-                        // we return early for this condition 
-                        // because we only want to trigger the display
+                        // we return early because we only want to trigger the display
                         // of the feedback if a single neighborhood is selected
-                        console.log("No single neighborhood selected.");
                         return;
                     }
-                    console.log("There are no results in this query.");
-                    $('#filter-feedback').fadeIn('slow');
+                    $filterFeedback.hide();
+                    $filterFeedback.text('');
+                    $filterFeedback.fadeIn('slow').text('0 results for selected filter(s)');
                 }
 
                 var geojsonLayer = L.geoJson(response, {
@@ -202,7 +202,10 @@ function getMap(){
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
                                 // TODO(Tree): handle null values gracefully and give feedback to user
-                                console.log('Neighborhood with 0 Street Trees: ', neighborhoodName);
+                                $filterFeedback.hide();
+                                $filterFeedback.text('');
+                                $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
+                                console.log("No street trees have been inventoried for " + neighborhoodName + '.');
                             }
                         }
                     });
