@@ -153,7 +153,8 @@ function getMap(){
                     fillOpacity: 0,
                     color: 'green',
                     opacity:0.4,
-                }
+                };
+
                 L.geoJson(response,{
                     style: neighborOptions,
                     onEachFeature: onEachFeature
@@ -161,7 +162,7 @@ function getMap(){
 
                 function onEachFeature(feature, layer) {
                     var neighborhoodName = feature.properties.NAME;
-
+                    layer.bindTooltip(neighborhoodName);
                     // populate the pseudo-global objects declared at the top of this file
                     // on order to hold values so that the dropdown can access them
                     allBounds[neighborhoodName] = layer.getBounds();
@@ -192,6 +193,19 @@ function getMap(){
                                 // TODO(Tree): handle null values gracefully and give feedback to user
                                 console.log('Neighborhood with 0 Street Trees: ', neighborhoodName);
                             }
+                            // tooltip should remain closed on click
+                            layer.closeTooltip();
+                        },
+                        mouseover: function(e) {
+                            // tooltip should remain closed if the neighborhood has already been selected
+                            if (neighborhoodName == selectedNeighborhood){
+                                layer.closeTooltip();
+                            } else {
+                                layer.openTooltip();
+                            }
+                        },
+                        mouseout: function(e) {
+                            layer.closeTooltip();
                         }
                     });
                 } 
