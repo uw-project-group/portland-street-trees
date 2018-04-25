@@ -10,7 +10,6 @@ function getMap(){
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
     var defaultZoom = getZoomValue();
-    var maxZoom = 13;
     
     /*limits to panning*/
     var southWest = L.latLng(45.411, -122.922),
