@@ -23,17 +23,17 @@ function getMap(){
     var selectedFunctionalType = '';
 
     var allNbhdData = [{
-        condition: 'Good',
-        value: 50
+        condition: 'Good',      //Total values of each class of tree
+        value: 35.40            //77152 
     },{
         condition: 'Fair',
-        value: 25
+        value: 55.33            //120576
     },{
         condition: 'Poor',
-        value: 12.5
+        value: 8.42             //18346
     },{
         condition: 'Dead',
-        value: 12.5
+        value: 0.85             //1852
     }];
 
     /* variables to populate with values from the geojson so they can be easily consumed 
