@@ -142,7 +142,7 @@ function getMap(){
                     zoomToBoundsOnClick: true,
                     spiderfyOnMaxZoom: false,
                     polygonOptions: {
-                        color: 'yellowgreen',
+                        color: '#66bd63',
                         weight: 2,
                         opacity: 0.9 
                     }
@@ -165,7 +165,7 @@ function getMap(){
                     color: '#003300',
                     opacity:0.8,
                 };
-                
+
                 L.geoJson(response,{
                     style: neighborOptions,
                     onEachFeature: onEachFeature
