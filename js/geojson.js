@@ -325,18 +325,46 @@ function getMap(){
     }
 
     function createPopupContent(props) {
-        var treeAddress = createString("Address: ", props.address);
-        var treeCommonName = createString("Tree Common Name: ", props.common);
-        var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
-        var treeCondition = createString("Tree Condition: ", props.condition);
-        var wiresPresent = createString("Wires Present: ", props.wires);
-        var functionalType = createString("Functional Type: ", props.functional);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent + functionalType;
-        
-        function createString(labelName, propValue) {
-            return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
-        }
+        //reformat text for No HV wire prop to more user-friendly text
+        var wiresProps = props.wires === 'No HV' ? 'No high voltage' : props.wires;
+
+        var popupTitle = "<h1>" + props.common.toUpperCase()  + "</h1>";
+        var treeScientificName = createPopupAttributeText("Scientific Name: ", props.scientific);
+        var treeAddress = createPopupAttributeText("Address: ", props.address);
+        var treeCondition = createPopupAttributeText("Tree Condition: ", props.condition);
+        var wiresPresent = createPopupAttributeText("Wires Present: ", wiresProps);
+        var functionalType = createPopupAttributeText("Functional Type: ", convertTreeTypeToText(props.functional));
+        var popupContent = popupTitle + "<hr>"  + treeAddress  + treeScientificName + treeCondition + wiresPresent + functionalType;
+    
         return popupContent;
+    }
+
+    function convertTreeTypeToText(treeType) {
+        var fullText = '';
+        switch(treeType.toUpperCase()) {
+            case 'BD':
+            fullText = 'Broadleaf Deciduous';
+                break;
+            case 'BE':
+            fullText = 'Broadleaf Evergreen';
+                break;
+            case 'CD':
+            fullText = 'Coniferous Deciduous';
+                break;
+            case 'CE':
+            fullText = 'Coniferous Evergreen';
+                break;    
+            case 'PALM':
+            fullText = 'Palm';
+                break;      
+            default:
+            fullText = 'Unknown';
+        }
+        return fullText;
+    }
+
+    function createPopupAttributeText(labelName, propValue) {
+        return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
     }
 
     function createAjaxCall(neighborhood) {
