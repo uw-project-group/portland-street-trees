@@ -162,7 +162,7 @@ function getMap(){
 
                 function onEachFeature(feature, layer) {
                     var neighborhoodName = feature.properties.NAME;
-                    layer.bindTooltip(neighborhoodName);
+                    layer.bindTooltip(neighborhoodName, {sticky: true, direction: 'bottom'});
                     // populate the pseudo-global objects declared at the top of this file
                     // on order to hold values so that the dropdown can access them
                     allBounds[neighborhoodName] = layer.getBounds();

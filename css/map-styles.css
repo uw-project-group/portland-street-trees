@@ -11,6 +11,13 @@ This stylesheet is for all styles specific to the map itself (popups, zoom contr
     font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.leaflet-tooltip {
+    background-color: yellowgreen;
+    border: green;
+    color: white;
+    font: 20px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 /*
 Marker cluster plugin CSS overrides
 */
