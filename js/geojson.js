@@ -5,11 +5,11 @@ function getMap(){
 
     /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
+    var $filterFeedback = $('#filter-feedback');
 
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
     var defaultZoom = getZoomValue();
-    var maxZoom = 13;
     
     /*limits to panning*/
     var southWest = L.latLng(45.411, -122.922),
@@ -23,17 +23,17 @@ function getMap(){
     var selectedFunctionalType = '';
 
     var allNbhdData = [{
-        condition: 'Good',
-        value: 50
+        condition: 'Good',      //Total values of each class of tree
+        value: 35.40            //77152 
     },{
         condition: 'Fair',
-        value: 25
+        value: 55.33            //120576
     },{
         condition: 'Poor',
-        value: 12.5
+        value: 8.42             //18346
     },{
         condition: 'Dead',
-        value: 12.5
+        value: 0.85             //1852
     }];
 
     /* variables to populate with values from the geojson so they can be easily consumed 
@@ -73,7 +73,7 @@ function getMap(){
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
     L.control.layers(baseMaps,overylayMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
-
+    myMap.options.minZoom = 10;
     getData(myMap, selectedNeighborhood);
     
     getNeighborhoodPoly(myMap);
@@ -120,6 +120,17 @@ function getMap(){
         $.ajax(ajaxCall, {
             dataType: 'json',
             success: function(response) {
+                if (!response.features.length) {
+                    if (!neighborhood || neighborhood === 'ALL') {
+                        // we return early because we only want to trigger the display
+                        // of the feedback if a single neighborhood is selected
+                        return;
+                    }
+                    $filterFeedback.hide();
+                    $filterFeedback.text('');
+                    $filterFeedback.fadeIn('slow').text('0 results for selected filter(s)');
+                }
+
                 var geojsonLayer = L.geoJson(response, {
                     pointToLayer: pointToLayer
                 });
@@ -151,10 +162,10 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: 'green',
-                    opacity:0.4,
+                    color: '#003300',
+                    opacity:0.8,
                 };
-
+                
                 L.geoJson(response,{
                     style: neighborOptions,
                     onEachFeature: onEachFeature
@@ -191,7 +202,10 @@ function getMap(){
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
                                 // TODO(Tree): handle null values gracefully and give feedback to user
-                                console.log('Neighborhood with 0 Street Trees: ', neighborhoodName);
+                                $filterFeedback.hide();
+                                $filterFeedback.text('');
+                                $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
+                                console.log("No street trees have been inventoried for " + neighborhoodName + '.');
                             }
                             // tooltip should remain closed on click
                             layer.closeTooltip();
@@ -286,7 +300,7 @@ function getMap(){
         var geojsonMarkerOptions =  {
             radius: 6,
             fillColor: getFillColor(feature.properties.condition),
-            color: '#696969',
+            color: '#f2f2f2',
             weight: 1,
             opacity: 1,
             fillOpacity: 0.9
@@ -352,9 +366,9 @@ function getMap(){
     function getFillColor(conditionProperty) {
         switch (conditionProperty.toLowerCase()) {
             case 'good':
-                return 'greenyellow';
+                return '#006624';
             case 'fair':
-                return 'yellowgreen';
+                return '#66bd63';
             case 'poor':
                 return '#82551B';
             case 'dead':
