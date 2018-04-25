@@ -223,11 +223,11 @@ input[type=checkbox]:hover {
 }
 
 .goodColor {
-    background: greenyellow;
+    background: #006624;
 }
 
 .fairColor {
-    background: yellowgreen;
+    background: #66bd63;
 }
 
 .poorColor {
