@@ -101,10 +101,10 @@ select {
     box-shadow: 0 0 10px 0 #474849;
     color: #474849;
     display: none;
-    opacity: .9;
+    opacity: .95;
     padding: 10px;
     position: absolute;
-    top: 30%;
+    top: 40%;
     left: 40%;
     margin-top: -50px;
     margin-left: -50px;
