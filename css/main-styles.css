@@ -71,7 +71,7 @@ select {
     top: 60px;
     right: 0;
     width: 225px;
-    z-index: 10000;
+    z-index: 4000;
 }
 
 .mainHeader__dropdownMenu ul {
@@ -140,14 +140,14 @@ select {
     height: 100vh;
     position: fixed;
     top: 60px;
-    z-index: 1000;
+    z-index: 3000;
 }
 
 .infoPanel {
     background: white;
     overflow: auto;
     padding: 15px 15px 100px 15px;
-    width: 300px;
+    width: 260px;
 }
 
 .infoPanel__toggle {
@@ -266,5 +266,14 @@ input[type=checkbox]:disabled {
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
-    z-index: 10000;
+    z-index: 2000;
+}
+
+
+/* MEDIA QUERIES */
+
+@media only screen and (min-width: 768px) {
+    .infoPanel {
+        width: 320px;
+    }
 }
