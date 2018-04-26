@@ -38,8 +38,9 @@ Leaflet overrides
     background-color: white;
     border: lightgrey;
     color: black;
-    font: 20px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    padding: 10px;
+    font: 14px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 8px;
+    margin-top: 15px;
 }
 
 /*
