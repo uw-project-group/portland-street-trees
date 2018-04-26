@@ -12,7 +12,7 @@ function getMap(){
     var defaultZoom = getZoomValue();
     
     /*limits to panning*/
-    var southWest = L.latLng(45.411, -122.922),
+    var southWest = L.latLng(45.411, -123.00),
     northEast = L.latLng(45.67, -122.452);
     var bounds = L.latLngBounds(southWest, northEast);
 
@@ -58,10 +58,10 @@ function getMap(){
     var overylayMaps={
         '<span class ="overLay__text">Labels</span>':stamenTonerLite
     }
+    
 
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
-    
     
     
     //set bounds and animate the edge of panning area
@@ -162,7 +162,7 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: '#d8b365',
+                    color: '#cc9c33',
                     opacity:0.8,
                 };
 
@@ -320,7 +320,7 @@ function getMap(){
         } else if (clientWidth < 1000) {
             return 10;
         } else  {
-            return 12;
+            return 11.49;
         }
     }
 
