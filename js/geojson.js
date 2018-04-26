@@ -6,6 +6,7 @@ function getMap(){
     /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
     var $filterFeedback = $('#filter-feedback');
+    var $neighborhoodDisplayText = $('#displayed-neighborhood');
 
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
@@ -52,17 +53,14 @@ function getMap(){
     var baseMaps = {
         '<span class="tileLayer__text">Map</span>': cartoDB,
         '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
-        //'<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
     
     var overylayMaps={
         '<span class ="overLay__text">Labels</span>':stamenTonerLite
-    }
+    };
     
-
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
-    
     
     //set bounds and animate the edge of panning area
     myMap.setMaxBounds(bounds);
@@ -252,6 +250,9 @@ function getMap(){
                         functionalTypeRadioButtons[i].disabled = true;
                     }
                     presenceOfWiresCheckBox.disabled=true;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text('All Neighborhoods');
                 } else {
                     //enable radio buttons
                     for (var i = 0; i < treeConditionRadioButtons.length;  i++){
@@ -262,6 +263,9 @@ function getMap(){
                     }
                     // enable checkbox
                     presenceOfWiresCheckBox.disabled = false;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text(selectedNeighborhood);
                 }
 
                 //if previous marker cluster group exists, remove it
