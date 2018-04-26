@@ -201,12 +201,21 @@ select {
 
 .filters label:hover {
     color: #66bd63;
-    cursor: pointer;
+}
+
+input[type=radio],
+input[type=checkbox] {
+    margin-right: 2px;
 }
 
 input[type=radio]:hover,
 input[type=checkbox]:hover {
     cursor: pointer;
+}
+
+input[type=radio]:disabled,
+input[type=checkbox]:disabled {
+    cursor: not-allowed;
 }
 
 .legend-container {
