@@ -43,6 +43,17 @@ Leaflet overrides
     margin-top: 15px;
 }
 
+.leaflet-control-layers-base label:hover,
+.leaflet-control-layers-overlays label:hover {
+    color: #66bd63;
+    cursor: pointer;
+}
+
+.leaflet-control-zoom a:hover {
+    color: #66bd63;
+    cursor: pointer;
+}
+
 /*
 Marker cluster plugin CSS overrides
 */
