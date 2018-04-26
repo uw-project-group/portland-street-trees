@@ -60,7 +60,7 @@ select {
 }
 
 .mainHeader button:focus {
-    color: greenyellow;
+    color: #cc9c33;
 }
 
 .mainHeader__dropdownMenu {
