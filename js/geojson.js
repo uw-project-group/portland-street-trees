@@ -142,7 +142,7 @@ function getMap(){
                     zoomToBoundsOnClick: true,
                     spiderfyOnMaxZoom: false,
                     polygonOptions: {
-                        color: 'yellowgreen',
+                        color: '#66bd63',
                         weight: 2,
                         opacity: 0.9 
                     }
@@ -164,7 +164,8 @@ function getMap(){
                     fillOpacity: 0,
                     color: '#003300',
                     opacity:0.8,
-                }
+                };
+
                 L.geoJson(response,{
                     style: neighborOptions,
                     onEachFeature: onEachFeature
@@ -172,7 +173,7 @@ function getMap(){
 
                 function onEachFeature(feature, layer) {
                     var neighborhoodName = feature.properties.NAME;
-
+                    layer.bindTooltip(neighborhoodName, {sticky: true, direction: 'bottom'});
                     // populate the pseudo-global objects declared at the top of this file
                     // on order to hold values so that the dropdown can access them
                     allBounds[neighborhoodName] = layer.getBounds();
@@ -206,6 +207,19 @@ function getMap(){
                                 $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
                                 console.log("No street trees have been inventoried for " + neighborhoodName + '.');
                             }
+                            // tooltip should remain closed on click
+                            layer.closeTooltip();
+                        },
+                        mouseover: function(e) {
+                            // tooltip should remain closed if the neighborhood has already been selected
+                            if (neighborhoodName == selectedNeighborhood){
+                                layer.closeTooltip();
+                            } else {
+                                layer.openTooltip();
+                            }
+                        },
+                        mouseout: function(e) {
+                            layer.closeTooltip();
                         }
                     });
                 } 
@@ -311,18 +325,46 @@ function getMap(){
     }
 
     function createPopupContent(props) {
-        var treeAddress = createString("Address: ", props.address);
-        var treeCommonName = createString("Tree Common Name: ", props.common);
-        var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
-        var treeCondition = createString("Tree Condition: ", props.condition);
-        var wiresPresent = createString("Wires Present: ", props.wires);
-        var functionalType = createString("Functional Type: ", props.functional);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent + functionalType;
-        
-        function createString(labelName, propValue) {
-            return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
-        }
+        //reformat text for No HV wire prop to more user-friendly text
+        var wiresProps = props.wires === 'No HV' ? 'No high voltage' : props.wires;
+
+        var popupTitle = "<h1>" + props.common.toUpperCase()  + "</h1>";
+        var treeScientificName = createPopupAttributeText("Scientific Name: ", props.scientific);
+        var treeAddress = createPopupAttributeText("Address: ", props.address);
+        var treeCondition = createPopupAttributeText("Tree Condition: ", props.condition);
+        var wiresPresent = createPopupAttributeText("Wires Present: ", wiresProps);
+        var functionalType = createPopupAttributeText("Functional Type: ", convertTreeTypeToText(props.functional));
+        var popupContent = popupTitle + "<hr>"  + treeAddress  + treeScientificName + treeCondition + wiresPresent + functionalType;
+    
         return popupContent;
+    }
+
+    function convertTreeTypeToText(treeType) {
+        var fullText = '';
+        switch(treeType.toUpperCase()) {
+            case 'BD':
+            fullText = 'Broadleaf Deciduous';
+                break;
+            case 'BE':
+            fullText = 'Broadleaf Evergreen';
+                break;
+            case 'CD':
+            fullText = 'Coniferous Deciduous';
+                break;
+            case 'CE':
+            fullText = 'Coniferous Evergreen';
+                break;    
+            case 'PALM':
+            fullText = 'Palm';
+                break;      
+            default:
+            fullText = 'Unknown';
+        }
+        return fullText;
+    }
+
+    function createPopupAttributeText(labelName, propValue) {
+        return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
     }
 
     function createAjaxCall(neighborhood) {

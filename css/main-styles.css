@@ -55,7 +55,7 @@ select {
 }
 
 .mainHeader button:hover {
-    color: yellowgreen;
+    color: #66bd63;
     cursor: pointer;
 }
 
@@ -91,7 +91,7 @@ select {
 .mainHeader__dropdownMenu a:hover,
 .mainHeader__dropdownMenu a:focus {
     color: white;
-    background: yellowgreen;
+    background: #66bd63;
     outline: none;
 }
 
@@ -131,7 +131,7 @@ select {
 }
 
 .overlay__closeButton:hover {
-    color: yellowgreen;
+    color: #66bd63;
 }
 
 .infoPanel__container {
@@ -181,12 +181,12 @@ select {
 }
 
 .infoPanel select:hover {
-    border: 1px solid yellowgreen;
+    border: 1px solid #66bd63;
     outline: none;
 }
 
 .infoPanel select:focus {
-    border: 1px solid greenyellow;
+    border: 1px solid #66bd63;
     outline: none;
 }
 
@@ -195,7 +195,7 @@ select {
 }
 
 .filters label:hover {
-    color: yellowgreen;
+    color: #66bd63;
     cursor: pointer;
 }
 
