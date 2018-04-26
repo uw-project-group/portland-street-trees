@@ -150,19 +150,24 @@ select {
     width: 300px;
 }
 
-.infoPanel__bar {
-    background: #474849;
-    box-shadow: 0 0 5px 0 #555;
-    color: white;
+.infoPanel__toggle {
+    background: white;
+    border-radius: 0px 0px 5px 0px;
+    box-shadow: 8px 8px 5px -4px rgba(0,0,0,0.75);        
+    color: #474849;
     cursor: pointer;
-    opacity: .5;
-    padding-top: 10px;
+    font-size: 22px;
+    height: 25px;
+    margin-left: -15px;
+    overflow: visible;
+    padding: 5px 2px 5px 12px;
     text-align: center;
-    width: 15px;
+    width: 35px;
+    z-index: 100;
 }
 
-.infoPanel__bar:hover {
-    opacity: .8;
+.infoPanel__toggle:hover {
+    color:  #66bd63;;
 }
 
 .infoPanel h2 {
