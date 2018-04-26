@@ -39,11 +39,12 @@ select {
     justify-content: space-between;
     opacity: .8;
     overflow: hidden;
+    padding-right: 10px;
     text-align: center;
 }
 
 .mainHeader h1 {
-    font-size: 24px;
+    font-size: 16px;
     padding: 0 15px;
 }
 
@@ -84,7 +85,7 @@ select {
     display: inline-block;
     color: whitesmoke;
     text-decoration: none;
-    padding: 10px;
+    padding: 5px;
     width: 100%;
 }
 
@@ -274,6 +275,14 @@ input[type=checkbox]:disabled {
 
 @media only screen and (min-width: 768px) {
     .infoPanel {
-        width: 320px;
+        width: 300px;
+    }
+
+    .mainHeader h1 {
+        font-size: 24px;
+    }
+
+    .mainHeader__dropdownMenu a {
+        padding: 10px;
     }
 }
