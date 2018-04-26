@@ -179,14 +179,14 @@ select {
 }
 
 .infoPanel h3 {
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 5px;
     margin-top: 10px;
 }
 
 .infoPanel select {
     border: 1px solid #474849;
-    width: 100%;
+    font-size: 16px;
 }
 
 .infoPanel select:hover {
@@ -286,7 +286,7 @@ input[type=checkbox]:disabled {
     }
     
     .infoPanel h3 {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .mainHeader h1 {
