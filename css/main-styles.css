@@ -144,7 +144,6 @@ select {
 
 .infoPanel {
     background: white;
-    opacity: .9;
     overflow: auto;
     padding: 15px 15px 100px 15px;
     width: 300px;
@@ -158,11 +157,11 @@ select {
     cursor: pointer;
     font-size: 22px;
     height: 25px;
-    margin-left: -15px;
+    margin-left: -16px;
     overflow: visible;
-    padding: 5px 2px 5px 12px;
-    text-align: center;
-    width: 35px;
+    padding: 5px 8px 5px 5px;
+    text-align: right;
+    width: 25px;
     z-index: 100;
 }
 
