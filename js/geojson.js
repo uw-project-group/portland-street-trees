@@ -50,8 +50,8 @@ function getMap(){
     var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
     var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
     var baseMaps = {
-        '<span class="tileLayer__text">CartoDB Positron</span>': cartoDB,
-        '<span class="tileLayer__text">Imagery</span>': EsriImgagery,
+        '<span class="tileLayer__text">Map</span>': cartoDB,
+        '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
         //'<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
     
@@ -162,7 +162,7 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: '#003300',
+                    color: '#d8b365',
                     opacity:0.8,
                 };
 
