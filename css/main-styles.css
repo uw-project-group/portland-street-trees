@@ -97,6 +97,7 @@ select {
 
 .overlay {
     background: white;
+    border-radius: 5px;
     box-shadow: 0 0 10px 0 #474849;
     color: #474849;
     display: none;
@@ -253,8 +254,8 @@ input[type=checkbox]:disabled {
 
 .filter-feedback {
     background:  #474849;
-    box-shadow: 0 0 10px 0 #474849;
     border-radius: 5px;
+    box-shadow: 0 0 10px 0 #474849;
     color: white;
     display: none;
     font-size: 20px;
