@@ -121,6 +121,13 @@ select {
     line-height: 1;
 }
 
+.overlay h5{
+    color: #474849;
+    text-decoration: none;
+}
+
+
+
 .overlay__closeButton {
     background: transparent;
     border: 1px solid transparent;
