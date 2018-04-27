@@ -3,7 +3,7 @@ function initialize(){
     var $filters = $('.filters');
     var $filterFeedback = $('#filter-feedback');
     var $infoPanel = $('.infoPanel');
-    var $infoPanelToggle = $('.infoPanel__bar');
+    var $infoPanelToggle = $('.infoPanel__toggle');
     var $infoButton = $('#main-header-info-button');
     var $mainHeaderMenu = $('#main-header-menu');
     var $map = $('#map');
@@ -17,6 +17,12 @@ function initialize(){
 
     $infoPanelToggle.click(function () {
         $infoPanel.toggle();
+        if ($infoPanel.is(":visible")) {
+            $infoPanelToggle.html('<i class="fas fa-caret-left fa-1x"></i>');
+        } else {
+            $infoPanelToggle.html('<i class="fas fa-caret-right fa-1x"></i>');
+        }
+
     });
 
     $infoButton.click(function () {
@@ -34,12 +40,10 @@ function initialize(){
     $neighborhoodSelectBox.click(function() {
         $overlay.fadeOut('slow');
         $filterFeedback.fadeOut('slow');
-        // overlayIsHidden = true;
     });
 
     $overlayCloseButton.click(function () {
         $overlay.fadeOut('slow');
-        // overlayIsHidden = true; 
     });
 }
 

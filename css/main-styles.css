@@ -39,12 +39,14 @@ select {
     justify-content: space-between;
     opacity: .8;
     overflow: hidden;
+    padding-right: 10px;
     text-align: center;
 }
 
 .mainHeader h1 {
-    font-size: 24px;
-    padding: 0 15px;
+    font-size: 16px;
+    margin-left: 20px;
+    margin-top: 15px;
 }
 
 .mainHeader button {
@@ -60,7 +62,7 @@ select {
 }
 
 .mainHeader button:focus {
-    color: greenyellow;
+    color: #cc9c33;
 }
 
 .mainHeader__dropdownMenu {
@@ -71,7 +73,7 @@ select {
     top: 60px;
     right: 0;
     width: 225px;
-    z-index: 10000;
+    z-index: 4000;
 }
 
 .mainHeader__dropdownMenu ul {
@@ -84,7 +86,7 @@ select {
     display: inline-block;
     color: whitesmoke;
     text-decoration: none;
-    padding: 10px;
+    padding: 5px;
     width: 100%;
 }
 
@@ -97,16 +99,16 @@ select {
 
 .overlay {
     background: white;
+    border-radius: 5px;
     box-shadow: 0 0 10px 0 #474849;
     color: #474849;
-    display: none;
-    opacity: .9;
+    opacity: .95;
     padding: 10px;
     position: absolute;
     top: 30%;
-    left: 40%;
-    margin-top: -50px;
-    margin-left: -50px;
+    margin: 0 auto;
+    right: 10%;
+    left: 10%;
     max-width: 500px;
     z-index: 10000;
 }
@@ -116,7 +118,7 @@ select {
 }
 
 .overlay__headingContainer h2 {
-    line-height: .25;
+    line-height: 1;
 }
 
 .overlay__closeButton {
@@ -139,45 +141,52 @@ select {
     height: 100vh;
     position: fixed;
     top: 60px;
-    z-index: 1000;
+    z-index: 3000;
 }
 
 .infoPanel {
     background: white;
-    opacity: .9;
     overflow: auto;
     padding: 15px 15px 100px 15px;
-    width: 300px;
+    width: 260px;
 }
 
-.infoPanel__bar {
-    background: #474849;
-    box-shadow: 0 0 5px 0 #555;
-    color: white;
+.infoPanel__toggle {
+    background: white;
+    border-radius: 0px 0px 5px 0px;
+    box-shadow: 8px 8px 5px -4px rgba(0,0,0,0.75);        
+    color: #474849;
     cursor: pointer;
-    opacity: .5;
-    padding-top: 10px;
-    text-align: center;
-    width: 15px;
+    font-size: 22px;
+    height: 25px;
+    margin-left: -16px;
+    overflow: visible;
+    padding: 5px 8px 5px 5px;
+    text-align: right;
+    width: 25px;
+    z-index: 100;
 }
 
-.infoPanel__bar:hover {
-    opacity: .8;
+.infoPanel__toggle:hover {
+    color:  #66bd63;;
 }
 
 .infoPanel h2 {
-    font-size: 20px;
+    font-size: 18px;
+    line-height: 1;
+    text-align: center;
+    margin-top: 5px;
 }
 
 .infoPanel h3 {
-    font-size: 18px;
+    font-size: 14px;
     margin-bottom: 5px;
     margin-top: 10px;
 }
 
 .infoPanel select {
     border: 1px solid #474849;
-    width: 100%;
+    font-size: 16px;
 }
 
 .infoPanel select:hover {
@@ -196,12 +205,21 @@ select {
 
 .filters label:hover {
     color: #66bd63;
-    cursor: pointer;
+}
+
+input[type=radio],
+input[type=checkbox] {
+    margin-right: 2px;
 }
 
 input[type=radio]:hover,
 input[type=checkbox]:hover {
     cursor: pointer;
+}
+
+input[type=radio]:disabled,
+input[type=checkbox]:disabled {
+    cursor: not-allowed;
 }
 
 .legend-container {
@@ -240,6 +258,7 @@ input[type=checkbox]:hover {
 
 .filter-feedback {
     background:  #474849;
+    border-radius: 5px;
     box-shadow: 0 0 10px 0 #474849;
     color: white;
     display: none;
@@ -251,5 +270,35 @@ input[type=checkbox]:hover {
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
-    z-index: 10000;
+    z-index: 2000;
+}
+
+
+/* MEDIA QUERIES */
+
+@media only screen and (min-width: 768px) {
+    .infoPanel {
+        width: 300px;
+    }
+
+    .infoPanel h2 {
+        font-size: 20px;
+    }
+    
+    .infoPanel h3 {
+        font-size: 16px;
+    }
+
+    .mainHeader h1 {
+        font-size: 24px;
+    }
+
+    .mainHeader__dropdownMenu a {
+        padding: 10px;
+    }
+
+    .overlay {
+        right: 10%;
+        left: 30%;
+    }
 }

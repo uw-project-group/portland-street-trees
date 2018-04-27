@@ -6,6 +6,7 @@ function getMap(){
     /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
     var $filterFeedback = $('#filter-feedback');
+    var $neighborhoodDisplayText = $('#displayed-neighborhood');
 
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
@@ -48,21 +49,14 @@ function getMap(){
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
     var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
-    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
+
     var baseMaps = {
         '<span class="tileLayer__text">Map</span>': cartoDB,
         '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
-        //'<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
     };
     
-    var overylayMaps={
-        '<span class ="overLay__text">Labels</span>':stamenTonerLite
-    }
-    
-
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
-    
     
     //set bounds and animate the edge of panning area
     myMap.setMaxBounds(bounds);
@@ -71,9 +65,10 @@ function getMap(){
     });
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
-    L.control.layers(baseMaps,overylayMaps).addTo(myMap);
+    L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
     myMap.options.minZoom = 10;
+
     getData(myMap, selectedNeighborhood);
     
     getNeighborhoodPoly(myMap);
@@ -122,13 +117,10 @@ function getMap(){
             success: function(response) {
                 if (!response.features.length) {
                     if (!neighborhood || neighborhood === 'ALL') {
-                        // we return early because we only want to trigger the display
-                        // of the feedback if a single neighborhood is selected
                         return;
                     }
-                    $filterFeedback.hide();
-                    $filterFeedback.text('');
-                    $filterFeedback.fadeIn('slow').text('0 results for selected filter(s)');
+                    // only trigger feedback if a single neighborhood is selected
+                    displayFilterFeedback('0 results for selected filter(s)');
                 }
 
                 var geojsonLayer = L.geoJson(response, {
@@ -201,11 +193,8 @@ function getMap(){
                                 // so that it always is in sync with the selected neighborhood
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
-                                // TODO(Tree): handle null values gracefully and give feedback to user
-                                $filterFeedback.hide();
-                                $filterFeedback.text('');
-                                $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
-                                console.log("No street trees have been inventoried for " + neighborhoodName + '.');
+                                var feedbackMessage = 'No street trees have been inventoried for ' + neighborhoodName + '.';
+                                displayFilterFeedback(feedbackMessage);                                
                             }
                             // tooltip should remain closed on click
                             layer.closeTooltip();
@@ -252,6 +241,9 @@ function getMap(){
                         functionalTypeRadioButtons[i].disabled = true;
                     }
                     presenceOfWiresCheckBox.disabled=true;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text('All Neighborhoods');
                 } else {
                     //enable radio buttons
                     for (var i = 0; i < treeConditionRadioButtons.length;  i++){
@@ -262,6 +254,9 @@ function getMap(){
                     }
                     // enable checkbox
                     presenceOfWiresCheckBox.disabled = false;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text(selectedNeighborhood);
                 }
 
                 //if previous marker cluster group exists, remove it
@@ -391,6 +386,11 @@ function getMap(){
         return ajaxString;
     }
 
+    function displayFilterFeedback(feedbackText) {
+        $filterFeedback.hide();
+        $filterFeedback.text('');
+        $filterFeedback.fadeIn('slow').text(feedbackText);
+    }
     function getFillColor(conditionProperty) {
         switch (conditionProperty.toLowerCase()) {
             case 'good':
