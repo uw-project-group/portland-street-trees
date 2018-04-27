@@ -45,7 +45,8 @@ select {
 
 .mainHeader h1 {
     font-size: 16px;
-    padding: 0 15px;
+    margin-left: 20px;
+    margin-top: 15px;
 }
 
 .mainHeader button {
@@ -101,14 +102,13 @@ select {
     border-radius: 5px;
     box-shadow: 0 0 10px 0 #474849;
     color: #474849;
-    display: none;
     opacity: .95;
     padding: 10px;
     position: absolute;
-    top: 40%;
-    left: 40%;
-    margin-top: -50px;
-    margin-left: -50px;
+    top: 20%;
+    margin: 0 auto;
+    right: 10%;
+    left: 10%;
     max-width: 500px;
     z-index: 10000;
 }
@@ -118,7 +118,7 @@ select {
 }
 
 .overlay__headingContainer h2 {
-    line-height: .25;
+    line-height: 1;
 }
 
 .overlay__closeButton {
@@ -295,5 +295,10 @@ input[type=checkbox]:disabled {
 
     .mainHeader__dropdownMenu a {
         padding: 10px;
+    }
+
+    .overlay {
+        right: 10%;
+        left: 30%;
     }
 }
