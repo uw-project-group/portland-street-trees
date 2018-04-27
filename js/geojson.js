@@ -49,15 +49,10 @@ function getMap(){
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
     var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
-    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
 
     var baseMaps = {
         '<span class="tileLayer__text">Map</span>': cartoDB,
         '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
-    };
-    
-    var overylayMaps={
-        '<span class ="overLay__text">Labels</span>':stamenTonerLite
     };
     
     /* create Leaflet map object */
@@ -70,7 +65,7 @@ function getMap(){
     });
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
-    L.control.layers(baseMaps, overylayMaps).addTo(myMap);
+    L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
     myMap.options.minZoom = 10;
 
@@ -114,20 +109,6 @@ function getMap(){
             }
         });
     }
-
-    $('.leaflet-control-layers-overlays').hide();
-    $('.leaflet-control-layers-separator').hide();
-
-    myMap.on('baselayerchange', function(e) {
-        if (e.layer.options.variant === 'World_Imagery') {
-            console.log(e.layer.options.variant);
-            $('.leaflet-control-layers-overlays').show();
-            $('.leaflet-control-layers-separator').show();
-        } else {
-            $('.leaflet-control-layers-overlays').hide();
-            $('.leaflet-control-layers-separator').hide().prop('checked', false);
-        }
-      });
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
