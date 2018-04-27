@@ -121,6 +121,19 @@ select {
     line-height: 1;
 }
 
+.overlay_authorAttribution {
+    color: #474849;
+}
+
+.overlay_authorAttribution a {
+    color: #006624;
+    text-decoration: none;
+}
+
+.overlay_authorAttribution a:hover {
+    color: #66bd63;
+}
+
 .overlay__closeButton {
     background: transparent;
     border: 1px solid transparent;
