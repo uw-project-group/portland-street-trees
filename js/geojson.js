@@ -50,6 +50,7 @@ function getMap(){
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
     var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
     var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
+
     var baseMaps = {
         '<span class="tileLayer__text">Map</span>': cartoDB,
         '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
@@ -120,13 +121,10 @@ function getMap(){
             success: function(response) {
                 if (!response.features.length) {
                     if (!neighborhood || neighborhood === 'ALL') {
-                        // we return early because we only want to trigger the display
-                        // of the feedback if a single neighborhood is selected
                         return;
                     }
-                    $filterFeedback.hide();
-                    $filterFeedback.text('');
-                    $filterFeedback.fadeIn('slow').text('0 results for selected filter(s)');
+                    // only trigger feedback if a single neighborhood is selected
+                    displayFilterFeedback('0 results for selected filter(s)');
                 }
 
                 var geojsonLayer = L.geoJson(response, {
@@ -199,11 +197,8 @@ function getMap(){
                                 // so that it always is in sync with the selected neighborhood
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
-                                // TODO(Tree): handle null values gracefully and give feedback to user
-                                $filterFeedback.hide();
-                                $filterFeedback.text('');
-                                $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
-                                console.log("No street trees have been inventoried for " + neighborhoodName + '.');
+                                var feedbackMessage = 'No street trees have been inventoried for ' + neighborhoodName + '.';
+                                displayFilterFeedback(feedbackMessage);                                
                             }
                             // tooltip should remain closed on click
                             layer.closeTooltip();
@@ -395,6 +390,11 @@ function getMap(){
         return ajaxString;
     }
 
+    function displayFilterFeedback(feedbackText) {
+        $filterFeedback.hide();
+        $filterFeedback.text('');
+        $filterFeedback.fadeIn('slow').text(feedbackText);
+    }
     function getFillColor(conditionProperty) {
         switch (conditionProperty.toLowerCase()) {
             case 'good':
