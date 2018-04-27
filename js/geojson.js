@@ -70,9 +70,10 @@ function getMap(){
     });
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
-    L.control.layers(baseMaps,overylayMaps).addTo(myMap);
+    L.control.layers(baseMaps, overylayMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
     myMap.options.minZoom = 10;
+
     getData(myMap, selectedNeighborhood);
     
     getNeighborhoodPoly(myMap);
@@ -113,6 +114,20 @@ function getMap(){
             }
         });
     }
+
+    $('.leaflet-control-layers-overlays').hide();
+    $('.leaflet-control-layers-separator').hide();
+
+    myMap.on('baselayerchange', function(e) {
+        if (e.layer.options.variant === 'World_Imagery') {
+            console.log(e.layer.options.variant);
+            $('.leaflet-control-layers-overlays').show();
+            $('.leaflet-control-layers-separator').show();
+        } else {
+            $('.leaflet-control-layers-overlays').hide();
+            $('.leaflet-control-layers-separator').hide().prop('checked', false);
+        }
+      });
 
     function getData(map, neighborhood) {
         var ajaxCall = createAjaxCall(neighborhood);
