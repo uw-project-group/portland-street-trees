@@ -6,13 +6,14 @@ function getMap(){
     /* jquery variables */
     var $neighborhoodSelectBox = $('#neigbhorbood-select-box');
     var $filterFeedback = $('#filter-feedback');
+    var $neighborhoodDisplayText = $('#displayed-neighborhood');
 
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
     var defaultZoom = getZoomValue();
     
     /*limits to panning*/
-    var southWest = L.latLng(45.411, -122.922),
+    var southWest = L.latLng(45.411, -123.00),
     northEast = L.latLng(45.67, -122.452);
     var bounds = L.latLngBounds(southWest, northEast);
 
@@ -48,21 +49,14 @@ function getMap(){
     /* tile layers */
     var cartoDB = L.tileLayer.provider('CartoDB.Positron');
     var EsriImgagery = L.tileLayer.provider('Esri.WorldImagery');
-    var stamenTonerLite = L.tileLayer.provider('Stamen.TonerLabels');
+
     var baseMaps = {
-        '<span class="tileLayer__text">CartoDB Positron</span>': cartoDB,
-        '<span class="tileLayer__text">Imagery</span>': EsriImgagery,
-        //'<span class="tileLayer__text">Stamen Toner Lite</span>': stamenTonerLite
+        '<span class="tileLayer__text">Map</span>': cartoDB,
+        '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
     };
     
-    var overylayMaps={
-        '<span class ="overLay__text">Labels</span>':stamenTonerLite
-    }
-
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
-    
-    
     
     //set bounds and animate the edge of panning area
     myMap.setMaxBounds(bounds);
@@ -71,9 +65,10 @@ function getMap(){
     });
 
     L.tileLayer.provider('CartoDB.Positron').addTo(myMap);
-    L.control.layers(baseMaps,overylayMaps).addTo(myMap);
+    L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
     myMap.options.minZoom = 10;
+
     getData(myMap, selectedNeighborhood);
     
     getNeighborhoodPoly(myMap);
@@ -122,13 +117,10 @@ function getMap(){
             success: function(response) {
                 if (!response.features.length) {
                     if (!neighborhood || neighborhood === 'ALL') {
-                        // we return early because we only want to trigger the display
-                        // of the feedback if a single neighborhood is selected
                         return;
                     }
-                    $filterFeedback.hide();
-                    $filterFeedback.text('');
-                    $filterFeedback.fadeIn('slow').text('0 results for selected filter(s)');
+                    // only trigger feedback if a single neighborhood is selected
+                    displayFilterFeedback('0 results for selected filter(s)');
                 }
 
                 var geojsonLayer = L.geoJson(response, {
@@ -142,7 +134,7 @@ function getMap(){
                     zoomToBoundsOnClick: true,
                     spiderfyOnMaxZoom: false,
                     polygonOptions: {
-                        color: 'yellowgreen',
+                        color: '#66bd63',
                         weight: 2,
                         opacity: 0.9 
                     }
@@ -162,9 +154,10 @@ function getMap(){
                 var neighborOptions = {
                     fillColor:'#ffffff',
                     fillOpacity: 0,
-                    color: '#003300',
+                    color: '#cc9c33',
                     opacity:0.8,
-                }
+                };
+
                 L.geoJson(response,{
                     style: neighborOptions,
                     onEachFeature: onEachFeature
@@ -172,7 +165,7 @@ function getMap(){
 
                 function onEachFeature(feature, layer) {
                     var neighborhoodName = feature.properties.NAME;
-
+                    layer.bindTooltip(neighborhoodName, {sticky: true, direction: 'bottom'});
                     // populate the pseudo-global objects declared at the top of this file
                     // on order to hold values so that the dropdown can access them
                     allBounds[neighborhoodName] = layer.getBounds();
@@ -200,12 +193,22 @@ function getMap(){
                                 // so that it always is in sync with the selected neighborhood
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
-                                // TODO(Tree): handle null values gracefully and give feedback to user
-                                $filterFeedback.hide();
-                                $filterFeedback.text('');
-                                $filterFeedback.fadeIn('slow').text("No street trees have been inventoried for " + neighborhoodName + '.');
-                                console.log("No street trees have been inventoried for " + neighborhoodName + '.');
+                                var feedbackMessage = 'No street trees have been inventoried for ' + neighborhoodName + '.';
+                                displayFilterFeedback(feedbackMessage);                                
                             }
+                            // tooltip should remain closed on click
+                            layer.closeTooltip();
+                        },
+                        mouseover: function(e) {
+                            // tooltip should remain closed if the neighborhood has already been selected
+                            if (neighborhoodName == selectedNeighborhood){
+                                layer.closeTooltip();
+                            } else {
+                                layer.openTooltip();
+                            }
+                        },
+                        mouseout: function(e) {
+                            layer.closeTooltip();
                         }
                     });
                 } 
@@ -238,6 +241,9 @@ function getMap(){
                         functionalTypeRadioButtons[i].disabled = true;
                     }
                     presenceOfWiresCheckBox.disabled=true;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text('All Neighborhoods');
                 } else {
                     //enable radio buttons
                     for (var i = 0; i < treeConditionRadioButtons.length;  i++){
@@ -248,6 +254,9 @@ function getMap(){
                     }
                     // enable checkbox
                     presenceOfWiresCheckBox.disabled = false;
+
+                    // set display text of selected neighborhood in info panel heading
+                    $neighborhoodDisplayText.text(selectedNeighborhood);
                 }
 
                 //if previous marker cluster group exists, remove it
@@ -306,23 +315,51 @@ function getMap(){
         } else if (clientWidth < 1000) {
             return 10;
         } else  {
-            return 12;
+            return 11.49;
         }
     }
 
     function createPopupContent(props) {
-        var treeAddress = createString("Address: ", props.address);
-        var treeCommonName = createString("Tree Common Name: ", props.common);
-        var treeScientificName = createString("Tree Scientific Name: ", props.scientific);
-        var treeCondition = createString("Tree Condition: ", props.condition);
-        var wiresPresent = createString("Wires Present: ", props.wires);
-        var functionalType = createString("Functional Type: ", props.functional);
-        var popupContent = treeAddress + treeCommonName + treeScientificName + treeCondition + wiresPresent + functionalType;
-        
-        function createString(labelName, propValue) {
-            return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
-        }
+        //reformat text for No HV wire prop to more user-friendly text
+        var wiresProps = props.wires === 'No HV' ? 'No high voltage' : props.wires;
+
+        var popupTitle = "<h1>" + props.common.toUpperCase()  + "</h1>";
+        var treeScientificName = createPopupAttributeText("Scientific Name: ", props.scientific);
+        var treeAddress = createPopupAttributeText("Address: ", props.address);
+        var treeCondition = createPopupAttributeText("Tree Condition: ", props.condition);
+        var wiresPresent = createPopupAttributeText("Wires Present: ", wiresProps);
+        var functionalType = createPopupAttributeText("Functional Type: ", convertTreeTypeToText(props.functional));
+        var popupContent = popupTitle + "<hr>"  + treeAddress  + treeScientificName + treeCondition + wiresPresent + functionalType;
+    
         return popupContent;
+    }
+
+    function convertTreeTypeToText(treeType) {
+        var fullText = '';
+        switch(treeType.toUpperCase()) {
+            case 'BD':
+            fullText = 'Broadleaf Deciduous';
+                break;
+            case 'BE':
+            fullText = 'Broadleaf Evergreen';
+                break;
+            case 'CD':
+            fullText = 'Coniferous Deciduous';
+                break;
+            case 'CE':
+            fullText = 'Coniferous Evergreen';
+                break;    
+            case 'PALM':
+            fullText = 'Palm';
+                break;      
+            default:
+            fullText = 'Unknown';
+        }
+        return fullText;
+    }
+
+    function createPopupAttributeText(labelName, propValue) {
+        return "<div class='popupAttributes'><span class='labelName'>" + labelName + "</span> " + propValue + "</div>";
     }
 
     function createAjaxCall(neighborhood) {
@@ -349,6 +386,11 @@ function getMap(){
         return ajaxString;
     }
 
+    function displayFilterFeedback(feedbackText) {
+        $filterFeedback.hide();
+        $filterFeedback.text('');
+        $filterFeedback.fadeIn('slow').text(feedbackText);
+    }
     function getFillColor(conditionProperty) {
         switch (conditionProperty.toLowerCase()) {
             case 'good':

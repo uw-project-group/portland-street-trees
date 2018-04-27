@@ -5,10 +5,53 @@ This stylesheet is for all styles specific to the map itself (popups, zoom contr
 .popupAttributes .labelName {
     color: black;
     font-weight: bold;
+    margin-right: 6px;
 }
 
 .popupAttributes {
+    font: 14px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.leaflet-popup,
+.leaflet-popup-content {
+    width: 275px;
+}
+
+.leaflet-popup h1 {
+    color: #66bd63;
+    font: 18px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: .8;
+}
+
+.leaflet-popup hr {
+    width: 80%;
+}
+
+/*
+Leaflet overrides
+*/
+.leaflet-control {
     font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.leaflet-tooltip {
+    background-color: white;
+    border: lightgrey;
+    color: black;
+    font: 14px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    padding: 8px;
+    margin-top: 15px;
+}
+
+.leaflet-control-layers-base label:hover,
+.leaflet-control-layers-overlays label:hover {
+    color: #66bd63;
+    cursor: pointer;
+}
+
+.leaflet-control-zoom a:hover {
+    color: #66bd63;
+    cursor: pointer;
 }
 
 /*
@@ -18,12 +61,12 @@ Marker cluster plugin CSS overrides
 .marker-cluster-small,
 .marker-cluster-medium,
 .marker-cluster-large {
-	background-color: rgba(181, 226, 140, 0.6);
+	background-color: #66bd63;
 	}
 .marker-cluster-small div,
 .marker-cluster-medium div,
 .marker-cluster-large div {
-    background-color: rgba(107, 142, 35, 0.6);
+    background-color: rgba(71, 72, 73, 0.6);
     color: white;
     }
     
@@ -31,7 +74,7 @@ Marker cluster plugin CSS overrides
 .leaflet-oldie .marker-cluster-small,
 .leaflet-oldie .marker-cluster-medium,
 .leaflet-oldie .marker-cluster-large {
-	background-color: rgb(181, 226, 140);
+	background-color: rgb(102,189,99);
 	}
 .leaflet-oldie .marker-cluster-small div,
 .leaflet-oldie .marker-cluster-medium div,
@@ -41,9 +84,5 @@ Marker cluster plugin CSS overrides
 	}
 
 .marker-cluster div {
-    font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.leaflet-control {
     font: 12px 'Signika', 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

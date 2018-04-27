@@ -59,6 +59,7 @@
     <p>This map allows you to explore the health of neighborhood tree populations in Portland, Oregon.</p>
     <p>Select a neighorhood to view individual trees in that neigbhorhood as well as aggregate neighborhood statistics.</p>
     <p>Filter trees by their health condition, by tree type, and by whether or not they are near high voltage wires.</p>
+    <div class="overlay_authorAttribution"><strong>Map Authors: </strong><a href="http://treecasiano.com">Tree Casiano</a> and <a href="https://sethfrazier.github.io">Seth Frazier</a></div>
     
 </div>  
 
@@ -66,7 +67,7 @@
 
 <div class="infoPanel__container">
     <div class="infoPanel">
-        <h2>Neighborhood Tree Health</h2>
+        <h2>Tree Population Health<br><span id="displayed-neighborhood">All Neighborhoods</span></h2>
         <div class = "chart-container"></div>
         <div class = "legend-container">
             <div class = "legend-container__item">  
@@ -89,7 +90,7 @@
             <option value="ALL">ALL</option>
         </select>
         <h3>Filter Trees by Condition</h3>
-            <form class="filters" name="treeConditionFilter">
+        <form class="filters" name="treeConditionFilter">
             <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
             <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
             <label><input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br></label>
@@ -110,7 +111,9 @@
             <label><input type="radio" name="functionalTypeFilter" value="palm" title="Filter palm tree type." disabled> Palm<br></label>
         </form>
     </div>
-    <div class="infoPanel__bar"></div>
+    <div id="panel-collapse" class="infoPanel__toggle">
+        <i class="fas fa-caret-left fa-1x"></i>
+    </div>
 </div>
 
 <div class="mainContainer">
