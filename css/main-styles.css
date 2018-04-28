@@ -227,6 +227,8 @@ select {
 input[type=radio],
 input[type=checkbox] {
     margin-right: 2px;
+    padding-bottom: 8px;
+    padding-top: 7px;
 }
 
 input[type=radio]:hover,
