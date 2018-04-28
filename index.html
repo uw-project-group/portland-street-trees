@@ -89,27 +89,30 @@
             <option value="" disabled>Select a Neighborhood</option>
             <option value="ALL">ALL</option>
         </select>
-        <h3>Filter Trees by Condition</h3>
-        <form class="filters" name="treeConditionFilter">
-            <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
-            <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
-            <label><input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br></label>
-            <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
-            <label><input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br></label>
-        </form>
-        <h3>Filter Trees by Presence of Wires</h3>
-            <form class=filters>
-            <label><input id="presence-of-wires-checkbox" type="checkbox" name="wireFilter" value="high voltage" title="Filter trees by presence of high voltage wires." disabled> High Voltage Only<br></label>
-        </form>
-        <h3>Filter Trees by Functional Type</h3>
-            <form class="filters">
-            <label><input type="radio" name="functionalTypeFilter" value="" title="No tree type filter." checked> All<br></label>
-            <label><input type="radio" name="functionalTypeFilter" value="bd" title="Filter broadleaf deciduous tree type." disabled> Broadleaf Deciduous (BD)<br></label>
-            <label><input type="radio" name="functionalTypeFilter" value="be" title="Filter broadleaf evergreen tree type." disabled> Broadleaf Evergreen (BE)<br></label>
-            <label><input type="radio" name="functionalTypeFilter" value="cd" title="Filter coniferous deciduous tree type." disabled> Coniferous Deciduous (CD)<br></label>
-            <label><input type="radio" name="functionalTypeFilter" value="ce" title="Filter coniferous evergreen tree type." disabled> Coniferous Evergreen (CE)<br></label>
-            <label><input type="radio" name="functionalTypeFilter" value="palm" title="Filter palm tree type." disabled> Palm<br></label>
-        </form>
+        <div class="filters__container">
+            <h3>Filter Trees by Condition</h3>
+            <form class="filters" name="treeConditionFilter">
+                <label><input type="radio" name="treeCondition" value="" title="No tree condition filter." checked> All<br></label>
+                <label><input type="radio" name="treeCondition" value="good" title="Filter trees where tree condition is good." disabled> Good<br></label>
+                <label><input type="radio" name="treeCondition" value="fair" title="Filter trees where tree condition is fair." disabled> Fair<br></label>
+                <label><input type="radio" name="treeCondition" value="poor" title="Filter trees where tree condition is poor." disabled> Poor<br></label>
+                <label><input type="radio" name="treeCondition" value="dead" title="Filter trees where tree condition is dead." disabled> Dead<br></label>
+            </form>
+            <h3>Filter Trees by Presence of Wires</h3>
+                <form class=filters>
+                <label><input id="presence-of-wires-checkbox" type="checkbox" name="wireFilter" value="high voltage" title="Filter trees by presence of high voltage wires." disabled> High Voltage Only<br></label>
+            </form>
+            <h3>Filter Trees by Functional Type</h3>
+                <form class="filters">
+                <label><input type="radio" name="functionalTypeFilter" value="" title="No tree type filter." checked> All<br></label>
+                <label><input type="radio" name="functionalTypeFilter" value="bd" title="Filter broadleaf deciduous tree type." disabled> Broadleaf Deciduous (BD)<br></label>
+                <label><input type="radio" name="functionalTypeFilter" value="be" title="Filter broadleaf evergreen tree type." disabled> Broadleaf Evergreen (BE)<br></label>
+                <label><input type="radio" name="functionalTypeFilter" value="cd" title="Filter coniferous deciduous tree type." disabled> Coniferous Deciduous (CD)<br></label>
+                <label><input type="radio" name="functionalTypeFilter" value="ce" title="Filter coniferous evergreen tree type." disabled> Coniferous Evergreen (CE)<br></label>
+                <label><input type="radio" name="functionalTypeFilter" value="palm" title="Filter palm tree type." disabled> Palm<br></label>
+            </form>
+        </div>
+
     </div>
     <div id="panel-collapse" class="infoPanel__toggle">
         <i class="fas fa-caret-left fa-1x"></i>
