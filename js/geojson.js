@@ -231,15 +231,19 @@ function getMap(){
             $neighborhoodSelectBox.on('change', function() {
                 selectedNeighborhood = this.value;
                 if (selectedNeighborhood === 'ALL' || selectedNeighborhood === false) {
-                    // disable all filters when no neighhorhood is selected
+                    // disable all filters and clear filter values
+                    selectedTreeCondition = '';
                     treeConditionRadioButtons[0].checked=true;
                     for (var i = 0; i < treeConditionRadioButtons.length;  i++){
                         treeConditionRadioButtons[i].disabled = true;
                     }
+                    selectedFunctionalType = '';
                     functionalTypeRadioButtons[0].checked=true;
                     for (var i = 0; i < functionalTypeRadioButtons.length;  i++){
                         functionalTypeRadioButtons[i].disabled = true;
                     }
+                    selectedPresenceOfWires = '';
+                    presenceOfWiresCheckBox.checked=false;
                     presenceOfWiresCheckBox.disabled=true;
 
                     // set display text of selected neighborhood in info panel heading
