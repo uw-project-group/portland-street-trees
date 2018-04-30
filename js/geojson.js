@@ -68,6 +68,7 @@ function getMap(){
     L.control.layers(baseMaps).addTo(myMap);
     myMap.zoomControl.setPosition('bottomright');
     myMap.options.minZoom = 10;
+    myMap.options.maxZoom = 18;
 
     getData(myMap, selectedNeighborhood);
     
