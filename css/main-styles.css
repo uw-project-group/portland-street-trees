@@ -160,7 +160,7 @@ select {
 .infoPanel {
     background: white;
     overflow: auto;
-    padding: 15px 15px 100px 15px;
+    padding: 15px;
     width: 260px;
 }
 
@@ -216,6 +216,10 @@ select {
     cursor: pointer;
 }
 
+.filters__container {
+    margin-bottom: 100px;
+}
+
 .filters label:hover {
     color: #66bd63;
 }
@@ -223,6 +227,8 @@ select {
 input[type=radio],
 input[type=checkbox] {
     margin-right: 2px;
+    padding-bottom: 8px;
+    padding-top: 7px;
 }
 
 input[type=radio]:hover,
