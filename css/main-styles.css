@@ -56,13 +56,13 @@ select {
     outline: none;
 }
 
-.mainHeader button:hover {
-    color: #66bd63;
-    cursor: pointer;
+.mainHeader button:focus {
+    color:  #cc9c33;
 }
 
-.mainHeader button:focus {
-    color: #cc9c33;
+.mainHeader button:hover {
+    color:  #66bd63;
+    cursor: pointer;
 }
 
 .mainHeader__dropdownMenu {
@@ -90,13 +90,17 @@ select {
     width: 100%;
 }
 
-.mainHeader__dropdownMenu a:hover,
-.mainHeader__dropdownMenu a:focus {
-    color: white;
+.mainHeader__dropdownMenu a:hover {
     background: #66bd63;
+    color: white;
     outline: none;
 }
 
+.mainHeader__dropdownMenu a:focus {
+    background:  #cc9c33;
+    color: white;
+    outline: none;
+}
 .overlay {
     background: white;
     border-radius: 5px;
@@ -119,19 +123,6 @@ select {
 
 .overlay__headingContainer h2 {
     line-height: 1;
-}
-
-.overlay_authorAttribution {
-    color: #474849;
-}
-
-.overlay_authorAttribution a {
-    color: #006624;
-    text-decoration: none;
-}
-
-.overlay_authorAttribution a:hover {
-    color: #66bd63;
 }
 
 .overlay__closeButton {
