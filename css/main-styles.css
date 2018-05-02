@@ -56,13 +56,13 @@ select {
     outline: none;
 }
 
-.mainHeader button:hover {
-    color: #66bd63;
-    cursor: pointer;
+.mainHeader button:focus {
+    color:  #cc9c33;
 }
 
-.mainHeader button:focus {
-    color: #cc9c33;
+.mainHeader button:hover {
+    color:  #66bd63;
+    cursor: pointer;
 }
 
 .mainHeader__dropdownMenu {
