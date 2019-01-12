@@ -1,6 +1,6 @@
 # Portland Street Trees Map
 
-This map provides the user with a snapshot of the health condition of street trees for neigbhorhoods in Portland, Oregon. It also displays individual trees and details such as tree type, tree health condition, and the tree's common and scientific names. 
+This map provides the user with a snapshot of the health condition of street trees for neighborhoods in Portland, Oregon. It also displays individual trees and details such as tree type, tree health condition, and the tree's common and scientific names. 
 
 **Project Team:**  [Seth Frazier](https://sethfrazier.github.io) and [Tree Casiano](http://treecasiano.com)
 
