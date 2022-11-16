@@ -11,7 +11,7 @@ function getMap(){
     /* default map values */
     var pdxCenterCoords = [45.5410, -122.6769];
     var defaultZoom = getZoomValue();
-    
+
     /*limits to panning*/
     var southWest = L.latLng(45.411, -123.00),
     northEast = L.latLng(45.67, -122.452);
@@ -25,7 +25,7 @@ function getMap(){
 
     var allNbhdData = [{
         condition: 'Good',      //Total values of each class of tree
-        value: 35.40            //77152 
+        value: 35.40            //77152
     },{
         condition: 'Fair',
         value: 55.33            //120576
@@ -37,7 +37,7 @@ function getMap(){
         value: 0.85             //1852
     }];
 
-    /* variables to populate with values from the geojson so they can be easily consumed 
+    /* variables to populate with values from the geojson so they can be easily consumed
     in other functions */
     var allBounds = {};
     var allConditions = {};
@@ -54,10 +54,10 @@ function getMap(){
         '<span class="tileLayer__text">Map</span>': cartoDB,
         '<span class="tileLayer__text">Satellite Imagery</span>': EsriImgagery,
     };
-    
+
     /* create Leaflet map object */
     myMap = L.map('map', {layers: [cartoDB]}).setView(pdxCenterCoords, defaultZoom);
-    
+
     //set bounds and animate the edge of panning area
     myMap.setMaxBounds(bounds);
     myMap.on('drag', function() {
@@ -71,7 +71,7 @@ function getMap(){
     myMap.options.maxZoom = 18;
 
     getData(myMap, selectedNeighborhood);
-    
+
     getNeighborhoodPoly(myMap);
 
     /* retrieve list of distinct neighborhoods from database and set event listeners on select box */
@@ -90,7 +90,7 @@ function getMap(){
             }
         });
     }
-    
+
     presenceOfWiresCheckBox.addEventListener('click', function() {
         if (presenceOfWiresCheckBox.checked) {
             selectedPresenceOfWires = this.value;
@@ -137,7 +137,7 @@ function getMap(){
                     polygonOptions: {
                         color: '#66bd63',
                         weight: 2,
-                        opacity: 0.9 
+                        opacity: 0.9
                     }
                 });
                 selectedMarkerClusterGroup = markers;
@@ -146,7 +146,7 @@ function getMap(){
             }
         });
     }
-    
+
     //load the neighborhoods geojson data
     function getNeighborhoodPoly(map){
         $.ajax("data/Neighborhood_Boundaries.geojson", {
@@ -195,7 +195,7 @@ function getMap(){
                                 $neighborhoodSelectBox.val(neighborhoodName).change();
                             } else if (feature.properties.TreeTotal === 0) {
                                 var feedbackMessage = 'No street trees have been inventoried for ' + neighborhoodName + '.';
-                                displayFilterFeedback(feedbackMessage);                                
+                                displayFilterFeedback(feedbackMessage);
                             }
                             // tooltip should remain closed on click
                             layer.closeTooltip();
@@ -212,7 +212,7 @@ function getMap(){
                             layer.closeTooltip();
                         }
                     });
-                } 
+                }
             }
         });
     }
@@ -267,10 +267,10 @@ function getMap(){
                 //if previous marker cluster group exists, remove it
                 if (selectedMarkerClusterGroup) {
                     myMap.removeLayer(selectedMarkerClusterGroup);
-                } 
-                
+                }
+
                 if (selectedNeighborhood === 'ALL') {
-                    // zoom out to city 
+                    // zoom out to city
                     myMap.setView(pdxCenterCoords, defaultZoom);
                     updateChart(allNbhdData);
                     updateLegend(allNbhdData);
@@ -335,7 +335,7 @@ function getMap(){
         var wiresPresent = createPopupAttributeText("Wires Present: ", wiresProps);
         var functionalType = createPopupAttributeText("Functional Type: ", convertTreeTypeToText(props.functional));
         var popupContent = popupTitle + "<hr>"  + treeAddress  + treeScientificName + treeCondition + wiresPresent + functionalType;
-    
+
         return popupContent;
     }
 
@@ -353,10 +353,10 @@ function getMap(){
                 break;
             case 'CE':
             fullText = 'Coniferous Evergreen';
-                break;    
+                break;
             case 'PALM':
             fullText = 'Palm';
-                break;      
+                break;
             default:
             fullText = 'Unknown';
         }
@@ -369,13 +369,15 @@ function getMap(){
 
     function createAjaxCall(neighborhood) {
         if (neighborhood === "SULLIVAN'S GULCH") {
-            // the correct way to escape a SQL apostrophe or single quote 
+            // the correct way to escape a SQL apostrophe or single quote
             // is with two single quotes
             neighborhood = "SULLIVAN''S GULCH";
         }
-        var url = "https://tcasiano.carto.com/api/v2/sql?format=GeoJSON&q=";
+
+        // TODO: Replace the backend once a free replacement for CartoDB is found
+        var url = "";
         var query = "SELECT * FROM pdx_street_trees WHERE neighborho ILIKE '" + neighborhood + "'";
-        
+
         if (selectedTreeCondition) {
             query += "AND lower(condition) = '" + selectedTreeCondition + "'";
         }
@@ -407,7 +409,7 @@ function getMap(){
             case 'dead':
                 return '#34220B';
             default:
-                return 'white';                
+                return 'white';
         }
     }
 
@@ -422,21 +424,21 @@ function getMap(){
         var chartWidth = 280,
         chartHeight = 240,
         radius = Math.min(chartWidth, chartHeight)/2;
-    
+
         var arc = d3.arc()
             .outerRadius(radius -10)
             .innerRadius(radius -70);
-    
+
         var labelArc = d3.arc()
             .outerRadius(radius - 40)
             .innerRadius(radius - 40);
-    
+
         var pie = d3.pie()
             .sort(null)
             .value(function(d){
                 return d.value;
             });
-        
+
         var chart = d3.select(".chart-container")
             .append("svg")
             .attr("width", chartWidth)
@@ -445,17 +447,17 @@ function getMap(){
             .append("g")
             .attr("class", "chart-center")
             .attr("transform", "translate(" + chartWidth / 2 + "," + chartHeight / 2 + ")");
-    
+
         var g = chart.selectAll(".arc")
             .data(pie(data))
             .enter().append("g")
             .attr("class", "arc");
-    
+
         g.append("path")
             .attr("d", arc)
-            .style("fill", function(d) { 
-            return getFillColor(d.data.condition); 
-        });   
+            .style("fill", function(d) {
+            return getFillColor(d.data.condition);
+        });
     }
 
     function updateChart(data) {
@@ -463,15 +465,15 @@ function getMap(){
         var chartWidth = 280,
         chartHeight = 240,
         radius = Math.min(chartWidth, chartHeight)/2;
-    
+
         var arc = d3.arc()
             .outerRadius(radius -10)
             .innerRadius(radius -70);
-    
+
         var labelArc = d3.arc()
             .outerRadius(radius - 40)
             .innerRadius(radius - 40);
-    
+
         var pie = d3.pie()
             .sort(null)
             .value(function(d){
@@ -482,8 +484,8 @@ function getMap(){
             .remove()
             .exit();
 
-        var chartCenter = d3.selectAll(".chart-center");    
-        
+        var chartCenter = d3.selectAll(".chart-center");
+
         var g = chartCenter.selectAll(".arc")
             .data(pie(data))
             .enter().append("g")
@@ -491,9 +493,9 @@ function getMap(){
 
         g.append("path")
             .attr("d", arc)
-            .style("fill", function(d) { 
-            return getFillColor(d.data.condition); 
-        });        
+            .style("fill", function(d) {
+            return getFillColor(d.data.condition);
+        });
     }
 }
 
